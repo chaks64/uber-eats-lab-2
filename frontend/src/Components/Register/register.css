@@ -84,11 +84,14 @@ p {
 }
 
 .abc{
-    height: 75px;
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
     width: 100%;
     background-color: #262626;
-    margin-top: 80px;
     color: white;
+    height: 12%;
 }
 
 .radius{
@@ -108,4 +111,25 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }

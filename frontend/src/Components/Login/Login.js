@@ -2,6 +2,13 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import './login.css';
 import {ReactComponent as Logo} from '../../imgs/ueats.svg'
+import { loginUser } from '../../redux/Actions';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { config } from '../../config/config';
+import { Redirect } from 'react-router';
+const jwt_decode = require('jwt-decode');
+
 
 export class Login extends Component {
 
@@ -10,14 +17,22 @@ export class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            authFlag: false,
+            usertoken: "",
+            usertype: "",
 
             message: ''
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
-    
+    componentWillMount() {
+        this.setState({
+            authFlag: false
+        })
+    }
 
     handleInputChange = e => {
         this.setState({
@@ -25,12 +40,54 @@ export class Login extends Component {
         });
     }
 
+
+    onSubmit(e) {
+        console.log("here for login");
+        e.preventDefault();
+        let data = {
+            username: this.state.username,
+            password: this.state.password,
+        };
+
+        axios.defaults.withCredentials = true;
+        axios.post(`${config.backendURL}/user/login`, data)
+        .then(response => {
+            this.setState({
+                
+                authFlag: true,
+                username: response.data.user,
+                usertype: response.data.type,
+                usertoken: response.data.token,
+            });
+            console.log(response.data.token);
+        })
+        .catch(error => {
+            this.setState({
+                message: error.response.data
+            })
+        });
+    }
+
+
     render() {
+
+        let redirectVar = null;
+        if (this.state.usertoken.length > 0) {
+            console.log("here for login url check");
+            localStorage.setItem("token", this.state.usertoken);
+            var decoded = jwt_decode(this.state.usertoken.split(' ')[1]);
+            localStorage.setItem("user_id", decoded._id);
+            localStorage.setItem("username", decoded.username);
+            
+            redirectVar = <Redirect to="/home" />
+        }
+
         return (
             <div>
+                {redirectVar}
                 <div className="container width">
                 
-                {/* <h1>{this.state.message}</h1> */}
+                 <h1>{this.state.message}</h1>
                     <div className="row justify-content-center">
                         <div className=" offset-col-md-4">
                             <div className="card-group mb-0 row">
@@ -39,7 +96,7 @@ export class Login extends Component {
                                     <div className="card-body align">
                                         <h2 className="align">Welcome Back</h2>
                                         <p className="text-muted">Sign In to your account</p>
-                                        <form onSubmit=" alert('You must be logged in to register');">
+                                        <form onSubmit={this.onSubmit}>
                                             <div className="align">
                                                 <input type="text" className="form-control rounded-0 align input-lg radius" onChange = {this.handleInputChange} name="username" placeholder="Email" required/>
                                             </div>
@@ -82,4 +139,15 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) =>{
+    return{
+        user : state.loginreducer.user
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loginUser: login => dispatch(loginUser(login))
+    };
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

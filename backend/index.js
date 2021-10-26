@@ -47,11 +47,12 @@ mongoose.connect(mongoDB, options, (err, res) => {
     }
 });
 
-// const Login = require("./routes/Login");
-// const Book = require("./routes/Book");
+const Login = require("./routes/Login");
+const Register = require("./routes/Register");
 
-// app.use("/user", Login);
-// app.use("/book", Book);
+console.log("here for req");
+app.use("/user", require("./routes/Register"));
+app.use("/user", require("./routes/Login"));
 
 //start your server on port 3001
 app.listen(3001, () => console.log("Server Listening on port 3001"));

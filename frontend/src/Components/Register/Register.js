@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import './register.css';
 import {ReactComponent as Logo} from '../../imgs/ueats.svg'
+import axios from 'axios';
+import { config } from '../../config/config';
 
 export class Register extends Component {
 
@@ -25,6 +27,7 @@ export class Register extends Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     handleInputChange = e => {
@@ -32,6 +35,36 @@ export class Register extends Component {
             [e.target.name]: e.target.value
         });
     }
+
+    onSubmit(e) {
+        e.preventDefault();
+        let data = {
+            username: this.state.username,
+            password: this.state.password,
+            fname: this.state.fname,
+            lname: this.state.lname,
+            usertype: this.state.usertype,
+            restname: this.state.restname,
+            add1: this.state.add1,
+            add2: this.state.add2,
+            pincode: this.state.pincode,
+            city: this.state.pincode,
+            state: this.state.state,
+            resttype: this.state.resttype
+        };
+        axios.post(`${config.backendURL}/user/register`, data)
+        .then(response => {
+                this.setState({
+                    success: true
+                });
+        })
+        .catch(error => {
+            this.setState({
+              message: error.response.data
+            })
+        });
+    }
+
 
     render() {
         
@@ -100,7 +133,7 @@ export class Register extends Component {
                 <div>
                 <div className="container width">
                 
-                {/* <h1>{this.state.message}</h1> */}
+                 <h1>{this.state.message}</h1>
                     <div className="row justify-content-center">
                         <div className=" offset-col-md-4">
                             <div className="card-group mb-0 row">
@@ -108,7 +141,7 @@ export class Register extends Component {
                                     <Logo className="checkwidth"/>
                                     <div className="card-body align">
                                         <h2 className="align">Let's get started</h2>
-                                        <form onSubmit=" alert('You must be logged in to register');">
+                                        <form onSubmit={this.onSubmit}>
                                             <div className="align">
                                                 <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$" className="form-control align  radius" onChange = {this.handleInputChange} name="username" placeholder="Email" required/>
                                             </div>
@@ -126,7 +159,7 @@ export class Register extends Component {
                                             {userReg}
 
                                             <div className="align">
-                                                <button type="Submit" class="btn btn-success btn-block color btn-lg">Login</button>
+                                                <button type="Submit" class="btn btn-success btn-block color btn-lg">Register</button>
                                             </div>
                                         </form>
                                     </div>

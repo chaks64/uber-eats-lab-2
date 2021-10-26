@@ -84,11 +84,14 @@ p {
 }
 
 .abc{
-    height: 100px;
-    width: 100vw;
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
+    width: 100%;
     background-color: #262626;
-    margin-top: 90px;
     color: white;
+    height: 12%;
 }
 
 .radius{
