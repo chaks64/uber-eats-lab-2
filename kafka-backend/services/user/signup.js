@@ -1,41 +1,43 @@
-"use strict"
-const express = require("express");
-const router = express.Router();
-const { checkAuth } = require("../utils/passport");
-const Users = require('../Models/UserModel');
-var kafka = require("../kafka/client");
 var bcrypt = require("bcryptjs");
-const { auth } = require(".././Utils/passport");
-auth();
+const jwt = require("jsonwebtoken");
+const { secret } = require("../../config/keys");
+let User = require("../../models/userModel");
 
+async function handle_request(msg, callback) {
+  console.log("Inside signup kafka backend");
+  console.log(msg);
 
-console.log("here after index");
-router.post('/register', (req, res) => {
+  let username = msg.username;
+  let password = await bcrypt.hash(msg.password, 10);
 
-    if (
-        req.body.username.length == 0 ||
-        req.body.password.length == 0 
-        //req.body.usertype.length == 0
-      ) {
-        res.status(400).json({ msg: "All fields required" });
+  const newUser = new User({
+    username,
+    password
+  });
+  User.findOne({ username: msg.username }, (err, result) => {
+    if (result) {
+      console.log("found");
+      console.log(result);
+      callback(null, "Already exists");
+    } else {
+      newUser.save((err, result) => {
+        if (err) {
+           // res.status(500).send();
+          callback(null,"Server error please check")
+        } else {
+          callback(null,result);
+
+            // res.writeHead(200, {
+            //     'Content-Type': 'text/plain'
+            // })
+            // res.end();
+        }
+      });
     }
-    else{
-        console.log(req.body);
-        kafka.make_request("signup", req.body, function (err, results) {
-            if (err) {
-              console.log("Inside err");
-              res.json({
-                status: "error",
-                msg: "System Error, Try Again.",
-              });
-            } else {
-              console.log("Inside router post");
-              console.log(results);
-              res.status(200).send(results);
-            }
-        });
+  });
 
-        // var newuser = new Users({
+
+// var newuser = new Users({
         //     username : req.body.username,
         //     password : req.body.password,
         //     fname : req.body.fname,
@@ -81,7 +83,8 @@ router.post('/register', (req, res) => {
         //         });
         //     }
         // });
-    }
-});
 
-module.exports = router ;
+  console.log("after callback");
+}
+
+exports.handle_request = handle_request;

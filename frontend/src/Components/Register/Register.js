@@ -55,8 +55,13 @@ export class Register extends Component {
         axios.post(`${config.backendURL}/user/register`, data)
         .then(response => {
                 this.setState({
-                    success: true
+                    success: true,
+                    message: "User created. Please Login..."
                 });
+
+                this.props.history.push("/login")
+
+                console.log(response);
         })
         .catch(error => {
             this.setState({
@@ -122,14 +127,11 @@ export class Register extends Component {
                 </div>
             </div>
 
-            // <div className="input-group align">
-            //   <input type="text" className="form-control marg" onChange = {this.fnameChangeHandler} name="fname" required placeholder="First Name"/>
-            //   <input type="text" className="form-control" onChange = {this.lnameChangeHandler} name="lname" required placeholder="Last Name"/>
-            // </div>
           }
 
         return (
             <div>
+                {this.state.message}
                 <div>
                 <div className="container width">
                 

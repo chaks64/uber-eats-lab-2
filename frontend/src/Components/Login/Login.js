@@ -53,7 +53,6 @@ export class Login extends Component {
         axios.post(`${config.backendURL}/user/login`, data)
         .then(response => {
             this.setState({
-                
                 authFlag: true,
                 username: response.data.user,
                 usertype: response.data.type,

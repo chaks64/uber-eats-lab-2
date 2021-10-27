@@ -8,7 +8,7 @@ const Users = require('../Models/UserModel');
 const { auth } = require("../utils/passport");
 auth();
 
-var kafka = require("../../kafka/client");
+var kafka = require("../kafka/client");
 
 //Route to handle Post Request Call
 router.post('/login', (req, res) => {
