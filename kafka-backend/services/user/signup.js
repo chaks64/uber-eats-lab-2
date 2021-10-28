@@ -1,7 +1,10 @@
 var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../../config/keys");
+let Cust = require("../../models/custModel");
+const Rest = require("../../models/restModel");
 let User = require("../../models/userModel");
+
 
 async function handle_request(msg, callback) {
   console.log("Inside signup kafka backend");
@@ -9,11 +12,41 @@ async function handle_request(msg, callback) {
 
   let username = msg.username;
   let password = await bcrypt.hash(msg.password, 10);
+  let usertype = msg.usertype;
+  let fname = msg.fname;
+  let lname = msg.lname;
+  let restname = msg.restname;
+  let add1 = msg.add1;
+  let add2 = msg.add2;
+  let city = msg.city;
+  let state = msg.state;
+  let pincode = msg.pincode;
+  let resttype = msg.resttype;
 
+  console.log("@@@@@@@@@@@@@@@@@@",msg);
   const newUser = new User({
     username,
-    password
+    password,
+    usertype
   });
+
+  const newCust = new Cust({
+    username,
+    fname,
+    lname
+  });
+
+  const newRest = new Rest({
+    username,
+    restname,
+    add1,
+    add2,
+    city,
+    state,
+    pincode,
+    resttype
+  })
+
   User.findOne({ username: msg.username }, (err, result) => {
     if (result) {
       console.log("found");
@@ -23,8 +56,37 @@ async function handle_request(msg, callback) {
       newUser.save((err, result) => {
         if (err) {
            // res.status(500).send();
+          console.log(err);
           callback(null,"Server error please check")
         } else {
+
+          //customer or rest add based on cust type
+          if(usertype === "cust"){
+            console.log("cust here",fname);
+            newCust.save((err, res) => {
+              if (err) {
+                console.log(err);
+                callback(null,"Cust error please check")
+              } else {
+                callback(null,res);
+              }
+            });
+          } 
+
+          //rest here
+          else{
+            console.log("rest here");
+            newRest.save((err, res) => {
+              if (err) {
+                console.log(err);
+                callback(null,"Rest error please check")
+              } else {
+                callback(null,res);
+              }
+            });
+          }
+
+
           callback(null,result);
 
             // res.writeHead(200, {

@@ -41,9 +41,9 @@ export class Register extends Component {
         let data = {
             username: this.state.username,
             password: this.state.password,
+            usertype: this.state.usertype,
             fname: this.state.fname,
             lname: this.state.lname,
-            usertype: this.state.usertype,
             restname: this.state.restname,
             add1: this.state.add1,
             add2: this.state.add2,
@@ -58,10 +58,10 @@ export class Register extends Component {
                     success: true,
                     message: "User created. Please Login..."
                 });
-
+                console.log(response);
                 this.props.history.push("/login")
 
-                console.log(response);
+                
         })
         .catch(error => {
             this.setState({
@@ -180,7 +180,7 @@ export class Register extends Component {
                     </div>
                     
                 </div>
-                <footer className="abc">
+                {/* <footer className="abc">
                     <div className="container-fluid">
                         <div className="margin" style={{width: "50%", float:"left"}}>
                             © 2020 Uber Technologies, Inc.
@@ -190,7 +190,7 @@ export class Register extends Component {
                             Privacy Policy  |  Terms of Use
                         </div>
                     </div>
-               </footer>
+               </footer> */}
             </div>
             </div>
         )

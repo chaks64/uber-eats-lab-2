@@ -14,8 +14,8 @@ router.post('/register', (req, res) => {
 
     if (
         req.body.username.length == 0 ||
-        req.body.password.length == 0 
-        //req.body.usertype.length == 0
+        req.body.password.length == 0 ||
+        req.body.usertype.length == 0
       ) {
         res.status(400).json({ msg: "All fields required" });
     }
@@ -30,7 +30,7 @@ router.post('/register', (req, res) => {
               });
             } else {
               console.log("Inside router post");
-              console.log(results);
+              //console.log(results);
               res.status(200).send(results);
             }
         });
