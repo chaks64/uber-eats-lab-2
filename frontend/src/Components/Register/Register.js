@@ -48,7 +48,7 @@ export class Register extends Component {
             add1: this.state.add1,
             add2: this.state.add2,
             pincode: this.state.pincode,
-            city: this.state.pincode,
+            city: this.state.city,
             state: this.state.state,
             resttype: this.state.resttype
         };

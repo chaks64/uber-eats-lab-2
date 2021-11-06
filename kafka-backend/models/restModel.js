@@ -9,7 +9,15 @@ var restsSchema = new Schema({
     city: {type: String},
     state: {type: String},
     pincode: {type: String},
-    resttype: {type: String}
+    resttype: {type: String},
+    order:[
+        {
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "order",
+          },
+        },
+    ],
 },
 {
     versionKey: false

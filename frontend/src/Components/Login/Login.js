@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import './login.css';
 import {ReactComponent as Logo} from '../../imgs/ueats.svg'
-import { loginUser } from '../../redux/Actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
-const jwt_decode = require('jwt-decode');
+import jwt_decode from "jwt-decode";
+import { loginAction } from '../../redux/login/loginActions';
+//import { loginAction } from "../redux/login/loginActions";
+
+
 
 
 export class Login extends Component {
@@ -41,9 +44,12 @@ export class Login extends Component {
     }
 
 
-    onSubmit(e) {
+    onSubmit = (e) =>  {
         console.log("here for login");
         e.preventDefault();
+
+        //this.props.login(this.state.username, this.state.password);
+
         let data = {
             username: this.state.username,
             password: this.state.password,
@@ -54,15 +60,20 @@ export class Login extends Component {
         .then(response => {
             this.setState({
                 authFlag: true,
-                username: response.data.user,
-                usertype: response.data.type,
-                usertoken: response.data.token,
+                usertoken: response.data,
             });
-            console.log(response.data.token);
+            console.log(response.data);
+            var decoded = jwt_decode(this.state.usertoken.split(" ")[1]);
+            var user = {
+                u_id: decoded.id,
+                username: decoded.username,
+                usertype: decoded.usertype,
+            };
+            console.log(user);
         })
         .catch(error => {
             this.setState({
-                message: error.response.data
+             //   message: error.response.data
             })
         });
     }
@@ -75,8 +86,9 @@ export class Login extends Component {
             console.log("here for login url check");
             localStorage.setItem("token", this.state.usertoken);
             var decoded = jwt_decode(this.state.usertoken.split(' ')[1]);
-            localStorage.setItem("user_id", decoded._id);
+            localStorage.setItem("user_id", decoded.id);
             localStorage.setItem("username", decoded.username);
+            localStorage.setItem("usertype", decoded.usertype);
             
             redirectVar = <Redirect to="/home" />
         }
@@ -138,15 +150,16 @@ export class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        user : state.loginreducer.user
-    }
-}
+// const mapStateToProps = (state) =>{
+//     return{
+//         loginProps: state.loginState
+//     }
+// }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        loginUser: login => dispatch(loginUser(login))
-    };
-  }
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// const actionCreators = {
+//     login: loginAction.login,
+  
+//     // logout: loginAction.logout
+//   };
+// export default connect(mapStateToProps, actionCreators)(Login);
+export default Login;

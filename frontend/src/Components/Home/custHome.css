@@ -1,0 +1,45 @@
+/* .outside{
+    border: 10%;
+    width: 50%;
+    border-radius: 5%;
+    border-width: thin;
+    border-style: solid;
+}
+
+.inside{
+    
+    border: 10%;
+    margin: 5% auto;
+    border-radius: 5%;
+    padding: 2%;
+    width: 80%;
+    border-width: thin;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.inside:hover{
+    background-color: grey;
+}
+
+.width-card{
+    width: 18rem;
+}
+
+.get-color{
+    background-color: gray;
+} */
+
+/* .card1 {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+  }
+  
+  .card1:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .container {
+    padding: 2px 16px;
+  } */

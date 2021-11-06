@@ -54,5 +54,17 @@ console.log("here for req");
 app.use("/user", require("./routes/Register"));
 app.use("/user", require("./routes/Login"));
 
+app.use("/cust",require("./routes/Restlist"));
+app.use("/cust",require("./routes/CustProfile"));
+app.use("/cust",require("./routes/UpdateCust"));
+app.use("/cust",require("./routes/AddFav"));
+app.use("/cust",require("./routes/ShowFav"));
+app.use("/cust",require("./routes/AddAddress"));
+app.use("/cust",require("./routes/NewOrder"));
+app.use("/cust",require("./routes/ShowOrders"));
+app.use("/cust",require("./routes/ShowReceipt"));
+
+app.use("/rest",require("./routes/ItemList")); 
+
 //start your server on port 3001
 app.listen(3001, () => console.log("Server Listening on port 3001"));

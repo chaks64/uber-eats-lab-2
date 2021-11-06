@@ -1,12 +1,12 @@
-"use strict";
 var JwtStrategy = require("passport-jwt").Strategy;
 var ExtractJwt = require("passport-jwt").ExtractJwt;
 const passport = require("passport");
 var { secret } = require("./config");
-const Users = require('../Models/UserModel');
+const User = require('../Models/UserModel');
 
 // Setup work and export for the JWT passport strategy
 function auth() {
+    console.log("Auth")
     var opts = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
         secretOrKey: secret
@@ -14,7 +14,8 @@ function auth() {
     passport.use(
         new JwtStrategy(opts, (jwt_payload, callback) => {
             const user_id = jwt_payload._id;
-            Users.findById(user_id, (err, results) => {
+                
+            User.findById(user_id, (err, results) => {
                 if (err) {
                     return callback(err, false);
                 }
@@ -30,6 +31,4 @@ function auth() {
 }
 
 exports.auth = auth;
-exports.checkAuth = passport.authenticate("jwt", { session: false });
-
-
+exports.checkAuth = passport.authenticate("jwt", { session: false }); 

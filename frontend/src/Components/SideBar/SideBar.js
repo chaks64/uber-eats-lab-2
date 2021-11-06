@@ -1,7 +1,4 @@
-//import useState hook to create menu collapse state
 import React, { Component } from 'react'
-
-//import react pro sidebar components
 import {
   ProSidebar,
   Menu,
@@ -28,7 +25,7 @@ export class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuCollapse: false,
+      menuCollapse: true,
     };
 
     //this.handleLogout = this.handleLogout.bind(this);

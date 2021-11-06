@@ -22,8 +22,23 @@ mongoose
   })
   .catch((err) => console.log(err));
 
+console.log("here for kafka");
 
 var signup = require("./services/user/signup");
+var login = require("./services/user/login");
+var restlist = require("./services/cust/restlist");
+
+var newOrder = require("./services/cust/newOrder");
+var custprofile = require("./services/cust/custprofile");
+var updatecust = require("./services/cust/updatecust");
+var addFav = require("./services/cust/addFav");
+var showFav = require("./services/cust/showFav");
+var addAddress = require("./services/cust/addAddress");
+var showOrders = require("./services/cust/showOrders");
+var showReceipt = require("./services/cust/showReceipt");
+
+
+var itemlist = require("./services/rest/itemlist");
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -59,3 +74,15 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("signup", signup);
+handleTopicRequest("login",login);
+handleTopicRequest("restlist",restlist);
+handleTopicRequest("itemlist",itemlist);
+handleTopicRequest("custprofile",custprofile);
+handleTopicRequest("updatecust",updatecust);
+handleTopicRequest("addFav",addFav);
+handleTopicRequest("showFav",showFav);
+handleTopicRequest("addAddress",addAddress);
+handleTopicRequest("newOrder",newOrder);
+handleTopicRequest("showOrders",showOrders);
+handleTopicRequest("showReceipt",showReceipt);
+
