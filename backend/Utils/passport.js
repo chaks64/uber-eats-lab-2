@@ -8,7 +8,7 @@ const User = require('../Models/UserModel');
 function auth() {
     console.log("Auth")
     var opts = {
-        jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
         secretOrKey: secret
     };
     passport.use(

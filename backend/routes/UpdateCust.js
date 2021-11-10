@@ -1,15 +1,13 @@
-"use strict"
+// "use strict"
 const express = require("express");
 const router = express.Router();
 const { checkAuth } = require("../utils/passport");
 var kafka = require("../kafka/client");
-const { auth } = require(".././Utils/passport");
-auth();
 
-var kafka = require("../kafka/client");
+
 
 //Route to handle Post Request Call
-router.post('/updatecust', (req, res) => {
+router.post('/updatecust', checkAuth,(req, res) => {
     console.log("Login backend here",req.body);
     if (req.body.username === "") {
         res.status(400).json({ msg: "All fields required" });

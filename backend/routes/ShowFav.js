@@ -1,9 +1,8 @@
-"use strict"
+// "use strict"
 const express = require("express");
 const router = express.Router();
 const { auth,checkAuth } = require("../utils/passport");
 var kafka = require("../kafka/client");
-//const { auth, checkAuth } = require("../utils/passport");
 auth();
 
 var kafka = require("../kafka/client");

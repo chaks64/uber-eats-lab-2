@@ -1,0 +1,28 @@
+.container{
+    width: 80%;
+}
+
+.corner{
+    border-style: solid;
+    border-width: thin;
+    border-color: grey;
+}
+
+.rest-img{
+    max-width: 100%;
+    max-height: auto;
+}
+
+.img-div{
+    width: 50%;
+    height: 100%;
+    margin: 0 0 5px 0;
+}
+
+.bk-img{
+    
+    background-image: url('https://via.placeholder.com/350');
+    background-size: cover;
+    height: 180px;
+    padding-top: 80px;
+}

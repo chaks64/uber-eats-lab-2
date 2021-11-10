@@ -15,29 +15,28 @@ function handle_request(msg, callback) {
     (err, result) => {
       if (err) {
         console.log("error");
-        // res.status(400).json({ msg: err });
       } else {
         if (result) {
-            if (!bcrypt.compareSync(msg.password, result.password)) {                
-                console.log('Invalid Credentials!');
-                let send = {
-                  status_code : 401,
-                  msg : "Invalid Crednetials!"
-                }
-                callback(null, send);                
+          if (!bcrypt.compareSync(msg.password, result.password)) {
+            console.log('Invalid Credentials!');
+            let send = {
+              status_code: 401,
+              msg: "Invalid Crednetials!"
             }
-            else {
-                console.log("Login success",result);
-                const payload = {
-                  _id: result._id,
-                  username: result.username,
-                  usertype: result.usertype,
-                };
-                const token = jwt.sign(payload, secret, {
-                  expiresIn: 1008000
-              });
-                callback(null,"jwt " + token);
-            }
+            callback(null, send);
+          }
+          else {
+            console.log("Login success", result);
+            const payload = {
+              _id: result._id,
+              username: result.username,
+              usertype: result.usertype,
+            };
+            const token = jwt.sign(payload, secret, {
+              expiresIn: 1008000
+            });
+            callback(null, "JWT " + token);
+          }
         } else {
           console.log("User doesn't exist");
           callback(null, "User doesn't exist");

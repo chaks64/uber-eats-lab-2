@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import './login.css';
 import {ReactComponent as Logo} from '../../imgs/ueats.svg'
-import { connect } from 'react-redux';
+//import { connect } from 'react-redux';
 import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
 import jwt_decode from "jwt-decode";
-import { loginAction } from '../../redux/login/loginActions';
+//import { loginAction } from '../../redux/login/loginActions';
 //import { loginAction } from "../redux/login/loginActions";
 
 
@@ -29,12 +29,6 @@ export class Login extends Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-    }
-
-    componentWillMount() {
-        this.setState({
-            authFlag: false
-        })
     }
 
     handleInputChange = e => {
@@ -76,7 +70,7 @@ export class Login extends Component {
              //   message: error.response.data
             })
         });
-    }
+    };
 
 
     render() {
@@ -86,12 +80,36 @@ export class Login extends Component {
             console.log("here for login url check");
             localStorage.setItem("token", this.state.usertoken);
             var decoded = jwt_decode(this.state.usertoken.split(' ')[1]);
-            localStorage.setItem("user_id", decoded.id);
+            localStorage.setItem("user_id", decoded._id);
             localStorage.setItem("username", decoded.username);
             localStorage.setItem("usertype", decoded.usertype);
             
             redirectVar = <Redirect to="/home" />
         }
+        
+        // if (JSON.parse(localStorage.getItem("user"))) {
+        //     console.log("here for redicrect@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        //     return (
+        //       <Redirect
+        //         to={{
+        //           pathname: "/custhome",
+        //         }}
+        //       ></Redirect>
+        //     );
+        //   }
+
+        //   const renderError = () => {
+        //     if (this.props.loginProps.errorFlag) {
+        //       console.log("Render error");
+      
+        //       return <alert>Login failed</alert>;
+        //     }
+        //     setTimeout(() => {
+        //       this.setState({
+        //         errorFlag: false,
+        //       });
+        //     }, 3000);
+        //   }
 
         return (
             <div>
@@ -150,16 +168,15 @@ export class Login extends Component {
     }
 }
 
-// const mapStateToProps = (state) =>{
-//     return{
-//         loginProps: state.loginState
-//     }
-// }
+// const mapStateToProps = (state, props) => {
+// return {
+//         loginProps: state.loginState,
+//     };
+// };
 
 // const actionCreators = {
 //     login: loginAction.login,
+// };
   
-//     // logout: loginAction.logout
-//   };
 // export default connect(mapStateToProps, actionCreators)(Login);
 export default Login;

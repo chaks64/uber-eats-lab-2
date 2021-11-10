@@ -1,4 +1,4 @@
-"use strict"
+// "use strict"
 const express = require("express");
 const router = express.Router();
 const { checkAuth } = require("../utils/passport");
@@ -21,7 +21,7 @@ router.post('/register', (req, res) => {
     }
     else{
         console.log(req.body);
-        kafka.make_request("signup", req.body, function (err, results) {
+        kafka.make_request("register", req.body, function (err, results) {
             if (err) {
               console.log("Inside err");
               res.json({

@@ -5,14 +5,15 @@ function handle_request(msg, callback) {
     console.log(msg);
     let username = msg.username;
 
-    Cust.find({username:username})
+    Cust.findOne({username:username})
     .select("rest")
     .populate('rest._id')
     .exec(function (err, list) {
         if (err){
             return handleError(err);
         } else{
-            callback(null, list);
+            console.log(JSON.stringify(list.rest));
+            callback(null, JSON.stringify(list.rest));
         }
     });
 

@@ -4,7 +4,6 @@ var connection =  new require('./kafka/Connection');
 const express = require("express");
 const mongoose = require("mongoose");
 
-let User = require("./models/userModel");
 const { mongoDB, frontendURL } = require('../backend/Utils/config');
 
 mongoose
@@ -24,7 +23,7 @@ mongoose
 
 console.log("here for kafka");
 
-var signup = require("./services/user/signup");
+var register = require("./services/user/register");
 var login = require("./services/user/login");
 var restlist = require("./services/cust/restlist");
 
@@ -39,6 +38,9 @@ var showReceipt = require("./services/cust/showReceipt");
 
 
 var itemlist = require("./services/rest/itemlist");
+var showMenu = require("./services/rest/showMenu");
+var addMenu = require("./services/rest/addMenu");
+
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -73,7 +75,9 @@ function handleTopicRequest(topic_name,fname){
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("signup", signup);
+
+
+handleTopicRequest("register", register);
 handleTopicRequest("login",login);
 handleTopicRequest("restlist",restlist);
 handleTopicRequest("itemlist",itemlist);
@@ -85,4 +89,5 @@ handleTopicRequest("addAddress",addAddress);
 handleTopicRequest("newOrder",newOrder);
 handleTopicRequest("showOrders",showOrders);
 handleTopicRequest("showReceipt",showReceipt);
-
+handleTopicRequest("showMenu",showMenu);
+handleTopicRequest("addMenu",addMenu);

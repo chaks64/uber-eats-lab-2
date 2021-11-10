@@ -4,11 +4,9 @@ function handle_request(msg, callback) {
     console.log("Inside add Fav kafka backend");
     console.log(msg);
     let rest_id = msg.rest_id;
-    //let rest_name = msg.rest_name;
     let username = msg.username;
     let newFav = {
         _id:rest_id,
-       // r_name:rest_name
     }
 
     Cust.findOne({username:username},(err, cust) => {
@@ -24,7 +22,7 @@ function handle_request(msg, callback) {
                     console.log(err);
                     callback(null, "Error");
                 } else{
-                    if(fav.length > 110){
+                    if(fav.length > 0){
                         console.log("###############",fav.length);
                         callback(null, "Already added to Fav");
                     } else{

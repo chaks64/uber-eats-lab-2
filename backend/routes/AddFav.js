@@ -1,4 +1,4 @@
-"use strict"
+// "use strict"
 const express = require("express");
 const router = express.Router();
 const { checkAuth } = require("../utils/passport");
@@ -18,7 +18,11 @@ router.post('/addFav', (req, res) => {
         kafka.make_request("addFav", req.body, function (err, results) {
             if(results){
                 console.log("After Kafka results add fav");
-                res.status(200).end(JSON.stringify(results));
+                if(results === "Already added to Fav"){
+                    res.status(201).end("Already added");
+                } else{
+                    res.status(200).end(JSON.stringify(results));
+                }
             } else{
                 console.log("after kafka error login",err);
                 res.writeHead(401,

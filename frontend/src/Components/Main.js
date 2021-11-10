@@ -6,7 +6,12 @@ import Register from './Register/Register'
 import SideBar from './SideBar/SideBar'
 import RestHome from './Home/RestHome'
 import CustHome from './Home/CustHome'
-import RestPro from './Profile/RestPro'
+import RestPro from './Profile/RestPro1'
+import Cust from './Profile/Cust'
+import Profile from './Profile/Profile'
+import Fav from './Home/Fav'
+import Orders from './Orders/Orders'
+import Checkout from './Orders/Checkout'
 
 class Main extends Component {
     render() {
@@ -19,6 +24,11 @@ class Main extends Component {
                 <Route path="/resthome" component={RestHome}/>
                 <Route path="/custhome" component={CustHome}/>
                 <Route path="/restpro" component={RestPro}/>
+                <Route path="/cust" component={Cust}/>
+                <Route path="/profile" component={Profile}/>
+                <Route path="/fav" component={Fav}/>
+                <Route path="/order" component={Orders}/>
+                <Route path="/checkout" component={Checkout}/>
             </div>
         )
     }

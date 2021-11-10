@@ -4,7 +4,7 @@ function handle_request(msg, callback) {
     console.log("Inside get profile kafka backend");
     console.log(msg);
     
-    Cust.find({username: msg.username},(err,result)=>{
+    Cust.findOne({username: msg.username},(err,result)=>{
        if(err){
            console.log("error")
        }else{
@@ -16,4 +16,4 @@ function handle_request(msg, callback) {
     console.log("after callback");
   }
   
-  exports.handle_request = handle_request;
+  exports.handle_request = handle_request;  

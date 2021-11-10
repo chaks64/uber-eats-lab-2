@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
@@ -29,7 +29,9 @@ router.post('/login', (req, res) => {
                 console.log(results);
                 res.status(200).send(results);
               }
-
+            });
+          }
+      });
 
             // if (err) {
             //   console.log("Inside err");
@@ -42,9 +44,7 @@ router.post('/login', (req, res) => {
             //   console.log(results);
             //   res.status(200).send(results);
             // }
-          });
-    }
-});
+
 //     Users.findOne({ username: req.body.username, password: req.body.password }, (error, users) => {
 //         if (error) {
 //             res.status(500).end("Error Occured");

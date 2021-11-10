@@ -9,16 +9,18 @@ auth();
 var kafka = require("../kafka/client");
 
 //Route to handle Post Request Call
-router.post('/addAddress', (req, res) => {
+router.post('/addMenu', (req, res) => {
     console.log("Login backend here",req.body);
-    if (req.body.username === "") {
+    if (req.body.rest_id === "") {
         res.status(400).json({ msg: "All fields required" });
     }
     else {
-        kafka.make_request("addAddress", req.body, function (err, results) {
+        kafka.make_request("addMenu", req.body, function (err, results) {
             if(results){
-                console.log("After Kafka results add fav");
-                res.status(200).end(JSON.stringify(results));
+                console.log("After Kafka results add menu");
+                
+                    res.status(200).end(JSON.stringify(results));
+                
             } else{
                 console.log("after kafka error login",err);
                 res.writeHead(401,

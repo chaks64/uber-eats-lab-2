@@ -47,9 +47,6 @@ mongoose.connect(mongoDB, options, (err, res) => {
     }
 });
 
-const Login = require("./routes/Login");
-const Register = require("./routes/Register");
-
 console.log("here for req");
 app.use("/user", require("./routes/Register"));
 app.use("/user", require("./routes/Login"));
@@ -64,7 +61,9 @@ app.use("/cust",require("./routes/NewOrder"));
 app.use("/cust",require("./routes/ShowOrders"));
 app.use("/cust",require("./routes/ShowReceipt"));
 
+app.use("/rest",require("./routes/ShowMenu"));
 app.use("/rest",require("./routes/ItemList")); 
+app.use("/rest",require("./routes/AddMenu"));
 
 //start your server on port 3001
 app.listen(3001, () => console.log("Server Listening on port 3001"));

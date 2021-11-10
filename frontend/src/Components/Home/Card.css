@@ -2,13 +2,15 @@
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 7px 14px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 12px;
   height: fit-content;
+  width: fit-content;
 }
+
 
 .mar-bor {
   margin-left: 50px;
