@@ -7,10 +7,11 @@ const Modal = ({ handleClose, show, children }) => {
     <div className="container">
       <div className={showHideClassName}>
         <section className="modal-main">
+        <i className="fa fa-times addToCartSymbol" onClick={handleClose} style={{color:"#255900",fontSize: "24px" }}></i>
           {children}
-          <button type="button" onClick={handleClose} className="">
+          {/* <button type="button" onClick={handleClose} className="">
             Close
-          </button>
+          </button> */}
         </section>
       </div>
     </div>

@@ -1,45 +1,109 @@
-/* .outside{
-    border: 10%;
-    width: 50%;
-    border-radius: 5%;
-    border-width: thin;
-    border-style: solid;
+#customer-home-restaurants-suggestions {
+    /* border: 1px solid grey; */
+    padding: 15px;
+    margin: 15px 10px 10px 2px;
+    width: 100%;
+    border-radius: 5px;
 }
 
-.inside{
-    
-    border: 10%;
-    margin: 5% auto;
-    border-radius: 5%;
-    padding: 2%;
-    width: 80%;
-    border-width: thin;
-    border-style: solid;
+.restaurantCard{
+    padding: 5px 10px 5px 15px;
+    margin: 10px 10px 10px 5px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+.restaurantCard:hover {
+    background-color: #D2D2D2;
     cursor: pointer;
 }
 
-.inside:hover{
-    background-color: grey;
+#home-box {
+    /* border: 1px solid grey; */
+    width: 72%;
+    /* margin-top: 100px; */
 }
 
-.width-card{
-    width: 18rem;
+#search-box {
+    /* border: 1px solid grey; */
+    padding: 15px 15px 0px 15px;
+    font-size: 1.5em;
 }
 
-.get-color{
-    background-color: gray;
+/* #searchBar {
+    background-image: url('../images/searchGlass.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding: 10px;
 } */
 
-/* .card1 {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 40%;
-  }
-  
-  .card1:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
-  
-  .container {
-    padding: 2px 16px;
-  } */
+/* #deliveryMode {
+    width: 100%;
+    padding: 10px;
+}
+
+#dishType {
+    width: 100%;
+    padding: 10px;
+} */
+
+
+.restSuggestionsBox {
+    /* border: 1px solid grey; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.eachRest {
+    /* border: 1px solid grey; */
+    width: 300px;
+    height: 250px;
+    padding: 10px;
+    margin: 15px;
+    margin-right: 0px;
+    /* background-image: url("rest1.jpg"); */
+}
+
+/* .eachRest:hover {
+    border-style: solid;
+    border-width: 1px;
+} */
+
+.fa-heart:hover {
+    text-decoration: none;
+    background-color:red;
+}
+
+.rest-image {
+    width: 275px;
+    height: 150px
+}
+
+.rest-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-right: 5px;
+}
+
+.rating {
+    font-size: 0.6em;
+    float: right;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background-color: #CDCDCD;
+}
+
+.delivery-details-line {
+    margin-top: -7px;
+}
+
+.delivery-time {
+    color: grey;
+}
+
+.mar-bor {
+    display: flex;
+    flex-wrap: wrap;
+}

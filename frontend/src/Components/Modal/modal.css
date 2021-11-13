@@ -16,8 +16,13 @@
     top:50%;
     left:50%;
     transform: translate(-50%,-50%);
-    border: 5px solid #255900;
-    border-radius: 10px;
+    border: 1px solid #255900;
+}
+
+.modal-main .addToCartSymbol{
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 .display-block {

@@ -17,7 +17,7 @@ import { RiPencilLine } from "react-icons/ri";
 //import sidebar css from react-pro-sidebar module and our custom css 
 import "react-pro-sidebar/dist/css/styles.css";
 import "./Header.css";
-import {ReactComponent as Logo} from '../../imgs/ueats.svg'
+import { ReactComponent as Logo } from '../../imgs/ueats.svg'
 import { Link } from 'react-router-dom';
 
 export class SideBar extends Component {
@@ -33,35 +33,35 @@ export class SideBar extends Component {
 
   handleLogout = () => {
     localStorage.clear();
-}
+  }
 
-  menuIconClick = () =>{
-    if(this.state.menuCollapse){
-        this.setState({
-          menuCollapse: false,
+  menuIconClick = () => {
+    if (this.state.menuCollapse) {
+      this.setState({
+        menuCollapse: false,
       });
     }
-    else{
+    else {
       this.setState({
         menuCollapse: true,
-    });
+      });
     }
 
   }
 
   render() {
     let sideLogin = null
-    if(localStorage.getItem("token")){
+    if (localStorage.getItem("token")) {
       sideLogin = <Menu iconShape="square">
-                    <MenuItem icon={<FiHome />}><Link to ="/home">Home</Link></MenuItem>
-                    <MenuItem icon={<FiTag />}><Link to ="/order">Orders</Link></MenuItem>
-                    <MenuItem icon={<FaRegHeart />}><Link to ="/fav">Favourite</Link></MenuItem>
-                    <MenuItem icon={<RiPencilLine />}><Link to ="/profile">Profile</Link></MenuItem>
-                  </Menu>
-    }else{
+        <MenuItem icon={<FiHome />}><Link to="/home">Home</Link></MenuItem>
+        <MenuItem icon={<FiTag />}><Link to="/order">Orders</Link></MenuItem>
+        <MenuItem icon={<FaRegHeart />}><Link to="/fav">Favourite</Link></MenuItem>
+        <MenuItem icon={<RiPencilLine />}><Link to="/profile">Profile</Link></MenuItem>
+      </Menu>
+    } else {
       sideLogin = <Menu iconShape="square">
-                    <MenuItem icon={<FiLogIn />}><Link to ="/login">SignIn</Link></MenuItem>
-                  </Menu>
+        <MenuItem icon={<FiLogIn />}><Link to="/login">SignIn</Link></MenuItem>
+      </Menu>
     }
 
     return (
@@ -69,14 +69,14 @@ export class SideBar extends Component {
         <div id="header">
           <ProSidebar collapsed={this.state.menuCollapse}>
             <SidebarHeader>
-            <div className="logotext">
-                <p>{this.state.menuCollapse ? "U" : <Logo className="fit"/>}</p>
+              <div className="logotext">
+                <p>{this.state.menuCollapse ? "U" : <Logo className="fit" />}</p>
               </div>
               <div className="closemenu" onClick={this.menuIconClick}>
                 {this.state.menuCollapse ? (
-                  <FiArrowRightCircle/>
+                  <FiArrowRightCircle />
                 ) : (
-                  <FiArrowLeftCircle/>
+                  <FiArrowLeftCircle />
                 )}
               </div>
             </SidebarHeader>
@@ -87,11 +87,11 @@ export class SideBar extends Component {
             </SidebarContent>
             <SidebarFooter>
               <Menu iconShape="square">
-                <MenuItem icon={<FiLogOut />}><Link to ="/login" onClick={this.handleLogout} >Logout</Link></MenuItem>
+                <MenuItem icon={<FiLogOut />}><Link to="/login" onClick={this.handleLogout} >Logout</Link></MenuItem>
               </Menu>
             </SidebarFooter>
           </ProSidebar>
-        </div>        
+        </div>
       </>
     )
   }

@@ -127,6 +127,8 @@
     }
     
     .mar-bor {
-      display: flex;
-      flex-wrap: wrap;
+      /* display: flex;
+      flex-wrap: wrap; */
+      padding-left: 5%;
+      /* margin-left: 200px; */
   }

@@ -14,8 +14,6 @@ function handle_request(msg, callback) {
             console.log(err);
             callback(null, "Error");
         } else {
-            console.log("!!!!!!!!!!!!!!!!",cust);
-
             Cust.find({"rest._id": msg.rest_id
             }, (err, fav) => {
                 if (err) {
@@ -23,10 +21,8 @@ function handle_request(msg, callback) {
                     callback(null, "Error");
                 } else{
                     if(fav.length > 0){
-                        console.log("###############",fav.length);
                         callback(null, "Already added to Fav");
                     } else{
-                        console.log("here if not ",fav.length);
                         cust.rest.push(newFav);
                         cust.save();
                         callback(null, cust);
@@ -35,23 +31,6 @@ function handle_request(msg, callback) {
             });
         }
     });
-
-    // Cust.findOneAndUpdate({username:username},{
-    //     $push:{favorite : newFav},
-    // },
-    // (err, result) => {
-    //     if (err) {
-    //         console.log(err);
-    //       callback(null, "Error");
-    //       // console.log(err);
-    //     } else {
-    //       // console.log(result);
-    //       callback(null, result);
-    //     }
-    //   }
-    // );
-
-
 
     console.log("after callback");
   }

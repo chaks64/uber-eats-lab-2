@@ -25,18 +25,18 @@ async function handle_request(msg, callback) {
                 let resultset = (menus.menu);
                 const menu = new Map();
                 resultset.forEach(menuItem => {
-                    console.log("99999999999999",menuItem);
+                    console.log("99999999999999", menuItem);
                     let category = menuItem.category;
                     let itemArray = menu.get(category)
                     if (itemArray) {
                         let item = {
                             item_id: menuItem._id,
                             name: menuItem.name,
-                           // description: menuItem.description,
+                            description: menuItem.description,
                             price: menuItem.price,
-                           // restid: menuItem.rest_id,
+                            // restid: menuItem.rest_id,
                             category: menuItem.category,
-                           // type: menuItem.type
+                            type: menuItem.type
                         };
                         itemArray.push(item);
                         menu.set(category, itemArray);
@@ -45,11 +45,11 @@ async function handle_request(msg, callback) {
                         let item = {
                             item_id: menuItem._id,
                             name: menuItem.name,
-                           // description: menuItem.description,
+                            description: menuItem.description,
                             price: menuItem.price,
-                           // restid: menuItem.rest_id,
-                           category: menuItem.category,
-                           // type: menuItem.type
+                            // restid: menuItem.rest_id,
+                            category: menuItem.category,
+                            type: menuItem.type
                         };
                         itemArray = [item];
                         menu.set(category, itemArray);
@@ -70,7 +70,7 @@ async function handle_request(msg, callback) {
                     finalMenu.push(temp);
                 })
 
-                console.log("@@@@@@@@@@",finalMenu);
+                console.log("@@@@@@@@@@", finalMenu);
 
 
                 callback(null, finalMenu);

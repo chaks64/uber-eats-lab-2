@@ -10,6 +10,10 @@ var restsSchema = new Schema({
     state: {type: String},
     pincode: {type: String},
     resttype: {type: String},
+    rating:{type: Number},
+    fee:{type: Number},
+    time:{type: String},
+    contact:{type: Number},
     menu:[
       { 
        // _id : {type: String},
@@ -17,7 +21,7 @@ var restsSchema = new Schema({
         category:{type: String},
         description:{type: String},
         price :{type: Number},
-        type :{type: String}
+        type :{type: String},
       },
     ],
     order:[

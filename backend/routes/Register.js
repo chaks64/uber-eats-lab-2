@@ -12,10 +12,10 @@ auth();
 console.log("here after index");
 router.post('/register', (req, res) => {
 
-    if (
-        req.body.username.length == 0 ||
-        req.body.password.length == 0 ||
-        req.body.usertype.length == 0
+    if (false
+        // req.body.username.length == 0 ||
+        // req.body.password.length == 0 ||
+        // req.body.usertype.length == 0
       ) {
         res.status(400).json({ msg: "All fields required" });
     }

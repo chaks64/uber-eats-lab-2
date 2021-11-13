@@ -30,22 +30,23 @@ async function handle_request(msg, callback) {
     usertype
   });
 
-  const newCust = new Cust({
-    username,
-    fname,
-    lname
-  });
+  // const newCust = new Cust({
+  //   _id,
+  //   username,
+  //   fname,
+  //   lname
+  // });
 
-  const newRest = new Rest({
-    username,
-    restname,
-    add1,
-    add2,
-    city,
-    state,
-    pincode,
-    resttype
-  })
+  // const newRest = new Rest({
+  //   username,
+  //   restname,
+  //   add1,
+  //   add2,
+  //   city,
+  //   state,
+  //   pincode,
+  //   resttype
+  // })
 
   User.findOne({ username: msg.username }, (err, result) => {
     if (result) {
@@ -62,7 +63,13 @@ async function handle_request(msg, callback) {
 
           //customer or rest add based on cust type
           if(usertype === "cust"){
-            console.log("cust here",fname);
+            console.log("cust here",result);
+            const newCust = new Cust({
+              _id : result._id,
+              username,
+              fname,
+              lname
+            });
             newCust.save((err, res) => {
               if (err) {
                 console.log(err);
@@ -76,6 +83,19 @@ async function handle_request(msg, callback) {
           //rest here
           else{
             console.log("rest here");
+
+            const newRest = new Rest({
+              _id: result._id,
+              username,
+              restname,
+              add1,
+              add2,
+              city,
+              state,
+              pincode,
+              resttype
+            })
+
             newRest.save((err, res) => {
               if (err) {
                 console.log(err);

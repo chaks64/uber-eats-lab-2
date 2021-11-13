@@ -18,7 +18,7 @@ export class Profile extends Component {
             redirectVar1 = <Redirect to= "/cust"/>
         }
         else{
-            redirectVar1 = <Redirect to= "/cust"/>
+            redirectVar1 = <Redirect to= "/rest"/>
         }
 
         return (

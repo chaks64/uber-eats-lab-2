@@ -3,9 +3,9 @@ import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
 import './custHome.css'
-import './Card.css'
+//import './Card.css'
 // import { connect } from 'react-redux';
-import food from './food.png';
+// import food from './food.png';
 // import Toggle from 'react-toggle';
 import NavBar from '../NavBar/NavBar';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,8 @@ export class CustHome extends Component {
             username: localStorage.getItem("username"),
             restlist: "",
             filterlist: "",
-            // show: false,
+            searchString: "",
+            // resttype:"",
 
             message: "",
 
@@ -49,6 +50,29 @@ export class CustHome extends Component {
                     message: error.response
                 })
             });
+    }
+
+
+    handleInputChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    resttypeChangeHandler = (e) => {
+        e.preventDefault();
+        let resttype = e.target.value;
+        console.log("****************",resttype);
+        resttype = "both";
+        
+        var arr = JSON.parse(this.state.filterlist);
+        console.log('array after parse', arr);
+        console.log(typeof (arr));
+        var filteredList = arr.filter(restaurant => restaurant.resttype === resttype);
+        console.log('array after filtering', filteredList);
+        this.setState({
+            restlist: (filteredList)
+        });
     }
 
 
@@ -108,118 +132,58 @@ export class CustHome extends Component {
             );
         }
 
-        let getRest = null;
 
+        let searchBar = (
+            <div className="row" id="search-box">
+                <form onSubmit={this.inputSearchHandler}>
+                    <div className="form-group">
+                        <input id="searchBar" type="search" style={{ width: "50%", margin: "auto" }} onChange={this.handleInputChange} className="form-control input-md" name="searchString" value={this.state.searchString} placeholder="What are you craving for? " />
+                    </div>
+                </form>
+            </div>
+        );
+
+        let getRest = null;
         if (this.state.restlist !== "") {
             getRest = this.state.restlist.map(rest => {
-
                 return (
-                    <div className=" feature-box col-sm-3 ">
-                        {console.log(rest)}
-                        <div className="card">
-                            <img src={food} alt="Card" />
-                            <div className="card__info">
-                                <h5 className="">{rest.restname}</h5>
-                                <p className=""><h6 className="">{rest.city}</h6>
-                                </p>
-                                <i className="fa fa-heart fa-2x" style={{ color: "red", margin: "auto" }} id={JSON.stringify(rest._id)} key={rest._id} onClick={this.addFav}></i><br />
-                                <button className="button" id={JSON.stringify(rest)} key={rest.rest_id} onClick={this.restChangeHandler}>
-                                    <Link to={{
-                                        pathname: "/restpro", state: {
-                                            rest_id: rest._id,
-                                            restname: rest.restname
-                                        }
-                                    }}>
-                                        See Menu</Link>
-                                </button>
-                            </div>
-                            {/* <button id={(rest.rest_id)} key={rest.rest_id} onClick={this.addFav}>Add to Fav</button> */}
+                    <div className="eachRest" id={JSON.stringify(rest)}>
+                        <div id={JSON.stringify(rest)} className="rest-image" style={{ backgroundImage: `url("/images/rest1.jpg")`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                            <i className="fa fa-heart a" style={{ fontSize: "20px", color: "white", padding: "10px", float: "right" }} id={JSON.stringify(rest._id)} key={rest._id} onClick={this.addFav}></i>
                         </div>
-                        {/*\\ <h3 id={rest} key={rest} onClick={this.restChangeHandler}> </h3> */}
-                        {/* <p id={rest} key={rest} onClick={this.restChangeHandler}>{rest.address_1} {rest.pin_code}</p> */}
+                        <p id={JSON.stringify(rest)} className="rest-name">{rest.restname} <span className="rating">{rest.rating}</span></p>
+                        <p className="delivery-details-line">{rest.fee} Delivery Fee <span className="delivery-time">{rest.time}</span></p>
+                        <button className="button" id={JSON.stringify(rest)} key={rest.rest_id}>
+                            <Link to={{
+                                pathname: "/restpro", state: {
+                                    rest_id: rest._id,
+                                    restname: rest.restname
+                                }
+                            }}>
+                                See Menu</Link>
+                        </button>
                     </div>
                 )
             })
         }
 
 
-        // let modal = null;
-        // //let itemList = null;
-        // let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
-        // if (cart !== null) {
-        //     modal = <Modal show={this.state.show} handleClose={this.hideModal}>
-        //         <div className="container">
-        //             <h3>Your cart!</h3>
-        //             <br />
-        //             <div>
-        //                 {
-        //                     (cart.menu_items).map(eachItem => {
-        //                         return (
-        //                             <table className="table" id={eachItem} key={eachItem}>
-        //                                 <tbody>
-        //                                     <tr>
-        //                                         <td className="text-center"> {eachItem.item_name}</td>
-        //                                         <td className="text-center">${eachItem.price}</td>
-        //                                         <td className="text-center"><button className="btn bg-transparent" id={JSON.stringify(eachItem)} onClick={this.qtyDecrement}> - </button> {eachItem.qty} <button className="btn bg-transparent" id={JSON.stringify(eachItem)} onClick={this.qtyIncrement}> + </button></td>
-        //                                     </tr>
-        //                                 </tbody>
-        //                             </table>
-        //                             // <div id={eachItem} key={eachItem} className="each-item container">
-        //                             //     <div>{eachItem.item_name} <span className="cartQty"><button className="btn bg-transparent" id={JSON.stringify(eachItem)} onClick={this.qtyDecrement}> - </button> {eachItem.qty} <button className="btn bg-transparent" id={JSON.stringify(eachItem)} onClick={this.qtyIncrement}> + </button></span></div>
-        //                             // </div>
-        //                         );
-        //                     })}
-        //             </div>
-        //             <button id="checkout" onClick={this.hideModal}><Link to="/checkout">Proceed to Checkout</Link></button>
 
-        //         </div>
-        //     </Modal>
-        // }
-
-
-        // let navLogin = null;
-        // navLogin = (
-        //     <ul class="nav navbar-nav navbar-right">
-        //         <li>
-        //             <i className="fa fa-shopping-cart fa-2x" style={{ color: "grey", margin: "auto" }} onClick={this.showModal}></i></li>
-        //         <li><Link to="/order">Orders</Link></li>
-        //         <li />
-        //     </ul>
-        // );
         return (
             <div>
-
-
-                {/* <nav className="navbar navbar-inverse">
-                    <div className="container-fluid">
-                        <div className="navbar-header">
-                            <a href='/home' className="navbar-brand">Uber Eats</a>
-                        </div>
-                        <ul className="nav navbar-nav">
-                            <li><Link to='/home'>Home</Link></li>
-                        </ul>
-                        {navLogin}
-                        {modal}
-                    </div>
-                </nav> */}
-
-                {/* <div className="wrg-toggle">
-    <div className="wrg-toggle-container">
-        <div className="wrg-toggle-check">
-            <span>Veg</span>
-        </div>
-        <div className="wrg-toggle-uncheck">
-            <span>🌞</span>
-        </div>
-    </div>
-    <div className="wrg-toggle-circle"></div>
-    <input className="wrg-toggle-input" type="checkbox" aria-label="Toggle Button" />
-</div> */}
                 <NavBar />
-                <div className="container-fluid mar-bor">
-                    <div className="row ">
-                        {getRest}
-                    </div>
+                {searchBar}
+
+                <select name="itemtype"  required onChange={this.resttypeChangeHandler}>
+                    <option selected value=''> -- select an option -- </option>
+                    <option value="delivery">Delivery</option>
+                    <option value="pickup">Pick Up</option>
+                </select>
+
+                <div className="mar-bor"> 
+
+                    {getRest}
+
                 </div>
             </div>
         )

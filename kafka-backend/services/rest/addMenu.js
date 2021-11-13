@@ -6,10 +6,10 @@ function handle_request(msg, callback) {
     let rest_id = msg.rest_id;
     let newMenu = {
         name: msg.item_name,
-        // category: msg.category,
-        // description: msg.description,
-        // type: msg.type,
-        // price: msg.price,
+        category: msg.category,
+        description: msg.description,
+        type: msg.type,
+        price: msg.price,
     }
 
     Rest.findOne({ _id: rest_id }, (err, rest) => {

@@ -1,0 +1,217 @@
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: black;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 30px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/*--------------------------------------------------------------------------------*/
+
+.topNav {
+    /* border: 1px solid grey; */
+    padding: 25px;
+}
+
+.navbarContainer {
+    width: 80%;
+}
+
+#signInBtn {
+    border: 3px solid grey;
+    padding: 15px 30px;
+    margin-top: -10px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+#logInBtn {
+    border: 3px solid grey;
+    padding: 15px 30px;
+    margin-top: -10px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+#logoutBtn {
+    border: 3px solid grey;
+    padding: 15px 30px;
+    margin-top: -10px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+
+.dd {
+    display: block;
+    /* background-color: #FFF2D9; */
+}
+
+.dp {
+    object-fit: cover;
+}
+
+.do {
+    height: 100%;
+}
+
+.c4 {
+    flex: none;
+}
+
+.dq {
+    flex: 1 0 300px;
+}
+
+.af {
+    position: relative;
+}
+
+.dn {
+    height: 100vh;
+}
+
+.dm {
+    background-color: #FFF2D9;
+}
+
+.al {
+    overflow: hidden;
+}
+
+.ag {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.mainContentBox {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+}
+
+/* -------------------------------------------------------------------------------------------------------------------- */
+
+.signInBtnSideNav {
+    width: 80%;
+    border: 0px;
+    background-color: white;
+
+    padding: 10px;
+    margin: -20px 10px 10px 10px;
+
+    font-weight: bold;
+}
+
+.sidenav p {
+    padding: 5px 10px 0px 10px;
+    color: white;
+    font-size: 0.9em;
+}
+
+.sideNavFooter {
+    /* position: absolute; */
+    bottom: 0;
+    position: absolute;
+    color: white;
+    font-size: 0.9em;
+}
+
+/* ---------------------------------------------------------------------- */
+
+.newUserLandingPageSearch {
+    box-sizing: border-box;
+    top: 22.5%;
+    position: relative;
+    padding-left: 30px;
+}
+
+.search-1 {
+    background-color: white;
+    padding: 15px;
+    width: 40%;
+    border-bottom: 1px solid grey;
+}
+
+.search-1-entry {
+    padding: 5px;
+    margin: -50px 10px -10px 10px;
+    width: 80%;
+}
+
+/* .search-1-entry:focus {
+    
+    border-bottom: 1px solid grey;
+    background-color: yellow;
+} */
+
+/* #search-1-entry:focus {
+    background-color: yellow;
+    border: none;
+} */
+
+#uber-eats-logo:hover {
+    cursor: pointer;
+}
+
+.nav-menu-items {
+    width: 100%;
+}
+
+#cart-button {
+    margin-left: 0px;
+    font-size: 1.25em;
+    width: 100%;
+    /* border: 1px solid white; */
+}
+
+#cart-button:hover {
+    color: #f1f1f1;
+}

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import './register.css';
 import {ReactComponent as Logo} from '../../imgs/ueats.svg'
 import axios from 'axios';
+import { Redirect } from 'react-router';
 import { config } from '../../config/config';
 
 export class Register extends Component {
@@ -36,6 +37,12 @@ export class Register extends Component {
         });
     }
 
+    // handleDropChange = e => {
+    //     this.setState({
+    //         [e.target.name]: e.target.value
+    //     });
+    // }
+
     onSubmit(e) {
         e.preventDefault();
         let data = {
@@ -64,15 +71,24 @@ export class Register extends Component {
                 
         })
         .catch(error => {
-            this.setState({
-              message: error.response.data
-            })
+            // this.setState({
+            //   message: error.response.data
+            // })
         });
     }
 
 
     render() {
-        
+        if (JSON.parse(localStorage.getItem("username"))) {
+            console.log("here for redicrect@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/home",
+                    }}
+                ></Redirect>
+            );
+        }
 
         let userReg = null;
         if(this.state.usertype === 'rest'){

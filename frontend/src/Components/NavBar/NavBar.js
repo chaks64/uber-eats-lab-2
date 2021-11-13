@@ -10,8 +10,8 @@ export class NavBar extends Component {
             show: false,
             qty: ''
         }
-        this.showModal = this.showModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
+            this.showModal = this.showModal.bind(this);
+            this.hideModal = this.hideModal.bind(this);
         this.qtyIncrement = this.qtyIncrement.bind(this);
         this.qtyDecrement = this.qtyDecrement.bind(this);
     }

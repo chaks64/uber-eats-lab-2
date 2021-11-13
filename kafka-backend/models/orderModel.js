@@ -11,9 +11,9 @@ var ordersSchema = new Schema({
     rest_name: {type: String},
     item: [
             {  // _id : {type: String},
-                item_name: {type: String},
-                item_price: {type: Number},
-                item_qty: {type: Number},
+                name: {type: String},
+                price: {type: Number},
+                qty: {type: Number},
         },
     ],
 },

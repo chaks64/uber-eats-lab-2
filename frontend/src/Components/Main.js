@@ -12,6 +12,9 @@ import Profile from './Profile/Profile'
 import Fav from './Home/Fav'
 import Orders from './Orders/Orders'
 import Checkout from './Orders/Checkout'
+import UpdateMenu from './Resturant_Menu/UpdateMenu';
+import AddMenu from './Resturant_Menu/AddMenu';
+import Rest from './Profile/Rest';
 
 class Main extends Component {
     render() {
@@ -29,6 +32,9 @@ class Main extends Component {
                 <Route path="/fav" component={Fav}/>
                 <Route path="/order" component={Orders}/>
                 <Route path="/checkout" component={Checkout}/>
+                <Route path="/updateMenu" component={UpdateMenu}/>
+                <Route path="/addMenu" component={AddMenu}/>
+                <Route path="/rest" component={Rest}/>
             </div>
         )
     }

@@ -13,7 +13,7 @@ export class Checkout extends Component {
             tax: 0,
             total_cost: 0,
             address: '',
-            carts : JSON.parse(localStorage.getItem('UBER_EATS_CART'))
+            carts: JSON.parse(localStorage.getItem('UBER_EATS_CART'))
         };
     }
 
@@ -78,7 +78,7 @@ export class Checkout extends Component {
                 if (eachItem.qty < 1) {
                     var pos = a.findIndex(f => f.item_id === itemClicked.item_id)
                     console.log("postions", pos);
-                    a.splice(pos, 1); 
+                    a.splice(pos, 1);
                 }
             }
 
@@ -142,13 +142,13 @@ export class Checkout extends Component {
     placeOrder = () => {
         let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
         const data = {
-            username : localStorage.getItem('username'),
+            username: localStorage.getItem('username'),
             rest_id: cart.restaurant_id,
             order_status: 'new',
             order_type: 'delivery',
-            address: this.state.address,
+            address: "",
             total_cost: this.state.total_cost,
-            menu_items: cart.menu_items
+            item: cart.menu_items
 
         }
         console.log("get cart", data.menu_items);
@@ -161,16 +161,11 @@ export class Checkout extends Component {
 
                 });
                 alert('Order Placed');
-
-
-
-
+                localStorage.removeItem('UBER_EATS_CART');
             })
             .catch(err => {
                 console.log(err);
-
             });
-
     }
 
     render() {
@@ -185,12 +180,13 @@ export class Checkout extends Component {
         }
 
         let checkout = null;
-        let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
-        let a = cart.menu_items;
-        console.log(cart);
-        checkout = a.map(eachItem => {
-           // if (eachItem !== null) {
-                return (    
+        if (localStorage.getItem('UBER_EATS_CART') !== null) {
+            let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
+            let a = cart.menu_items;
+            console.log(cart);
+            checkout = a.map(eachItem => {
+                // if (eachItem !== null) {
+                return (
                     <table className="table">
                         <tbody>
                             <tr>
@@ -201,8 +197,9 @@ export class Checkout extends Component {
                         </tbody>
                     </table>
                 )
-           // }
-        })
+                // }
+            })
+        }
 
 
         return (

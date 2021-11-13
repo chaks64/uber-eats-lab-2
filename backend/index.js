@@ -64,6 +64,11 @@ app.use("/cust",require("./routes/ShowReceipt"));
 app.use("/rest",require("./routes/ShowMenu"));
 app.use("/rest",require("./routes/ItemList")); 
 app.use("/rest",require("./routes/AddMenu"));
+app.use("/rest",require("./routes/EditMenu"));
+app.use("/rest",require("./routes/UpdateRest"));
+app.use("/rest",require("./routes/UpdateOrder"));
+app.use("/rest",require("./routes/RestProfile"));
+
 
 //start your server on port 3001
 app.listen(3001, () => console.log("Server Listening on port 3001"));

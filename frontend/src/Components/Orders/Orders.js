@@ -3,6 +3,7 @@ import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
 import Modal from '../Modal/Modal';
+import Paginate from './Pagination';
 
 export class Orders extends Component {
 
@@ -12,8 +13,10 @@ export class Orders extends Component {
             username: localStorage.getItem("username"),
             usertype: localStorage.getItem("usertype"),
             order_list: [],
-            items_list:[],
-            show : false,
+            items_list: [],
+            show: false,
+            curr_page: 1,
+            postPerPage: 3,
 
         };
 
@@ -33,6 +36,7 @@ export class Orders extends Component {
                 this.setState({
                     order_list: JSON.parse(response.data)
                 });
+                console.log("!@!@!@!@!@!",this.state.order_list.length);
             })
             .catch(err => {
 
@@ -41,22 +45,22 @@ export class Orders extends Component {
 
 
     showModal = (e) => {
-        console.log("!!!!!!!!!!!!!!!!!!!",(e.target.getAttribute("id")));
+        console.log("!!!!!!!!!!!!!!!!!!!", (e.target.getAttribute("id")));
 
         this.setState({
-            items_list : JSON.parse(e.target.getAttribute("id"))
+            items_list: JSON.parse(e.target.getAttribute("id"))
         })
-        
 
-        this.setState({ 
+
+        this.setState({
             show: true,
-         });
+        });
     }
 
     hideModal = () => {
-        this.setState({ 
+        this.setState({
             show: false,
-         });
+        });
     }
 
 
@@ -79,10 +83,15 @@ export class Orders extends Component {
         let getOrder = null;
         if (this.state.order_list != null) {
 
-            getOrder = this.state.order_list.map(order => {
+
+            const indexOfLastPost = this.state.curr_page * this.state.postPerPage;
+            const indexOfFirstPost = indexOfLastPost - this.state.postPerPage;
+            const currentOrders = this.state.order_list.slice(indexOfFirstPost, indexOfLastPost);
+
+            getOrder = currentOrders.map(order => {
                 if (localStorage.getItem('usertype') === 'cust') {
                     return (
-                        
+
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -138,33 +147,40 @@ export class Orders extends Component {
 
         let modal = null;
 
-        if(this.state.items_list != null){
+        if (this.state.items_list != null) {
             modal = <Modal show={this.state.show} handleClose={this.hideModal}>
 
-            <div className="container">
-		        <h3>Details</h3>
-		        <br />
-		        <div>
-                {this.state.items_list.map(eachItem => {
-		                return (
-                            <table className="table" id={eachItem} key={eachItem}>
-                                <tbody>
-                                    <tr>
-                                    <td className="text-center"> {eachItem.item_name}</td>
-                                    <td className="text-center">${eachItem.item_price}</td>
-                                    <td className="text-center">{eachItem.item_qty}</td>
-                                    <td className="text-center">${eachItem.item_qty}*{eachItem.item_price}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-		                );  
-		            })}
-		        </div>
-		        
-		    </div>
+                <div className="container">
+                    <h3>Details</h3>
+                    <br />
+                    <div>
+                        {this.state.items_list.map(eachItem => {
+                            return (
+                                <table className="table" id={eachItem} key={eachItem}>
+                                    <tbody>
+                                        <tr>
+                                            <td className="text-center"> {eachItem.item_name}</td>
+                                            <td className="text-center">${eachItem.item_price}</td>
+                                            <td className="text-center">{eachItem.item_qty}</td>
+                                            <td className="text-center">${eachItem.item_qty}*{eachItem.item_price}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            );
+                        })}
+                    </div>
+
+                </div>
             </Modal>
-            
+
         }
+
+        const paginate = pageNumber => 
+        {
+            this.setState({
+                curr_page : pageNumber
+            })
+        };
 
 
         return (
@@ -186,6 +202,7 @@ export class Orders extends Component {
                 <button onClick={this.filterOrder}>Apply</button>
 
                 {getOrder}
+                <Paginate postPerPage={this.state.postPerPage} totalPost={this.state.order_list.length} paginate={paginate}/>
                 {modal}
             </div>
         )

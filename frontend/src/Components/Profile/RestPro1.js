@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './restpro.css';
 import axios from 'axios';
 import { config } from '../../config/config';
-import food from './food.png';
 import NavBar from '../NavBar/NavBar';
 
 class RestPro extends Component {
@@ -101,35 +100,80 @@ class RestPro extends Component {
         if (this.state.menu_list !== "") {
             console.log('INSIDE RENDER METHOD')
             console.log(this.state.menu_list);
+            let mainImage = `"/images/rest1.jpg"`;
             getMenu = this.state.menu_list.map(menu => {
                 return (
-                    <div key={menu.category} className="w-50 p-3 text-left">
-                        <h2 id={menu.category_name}>
-                            {menu.category_name}
-                        </h2>
-                        <div >
-                            {console.log("!!!!!!!!!!!!!!!!", menu.dishes)}
+
+
+                    <div key={menu.category} className="menu-category-box">
+                        <h2 style={{ fontWeight: "bold" }} id={menu.category}>{menu.category}</h2>
+                        <div className="food-dish-list">
                             {(menu.dishes).map(eachFoodDish => {
-                                //console.log(eachFoodDish);
+
+                                // if (eachFoodDish.dish_type === 'veg') {
+                                //     mainImage = `"/images/veg.jpg"`;
+                                // } else if (eachFoodDish.dish_type === 'nonveg') {
+                                //     mainImage = `"/images/nonveg.jpg"`;
+                                // } else if (eachFoodDish.dish_type === 'vegan') {
+                                //     mainImage = `"/images/vegan.jpg"`;
+                                // }
+                                console.log("44444444", eachFoodDish)
                                 return (
-                                    <div className=" feature-box col-sm-3 ">
-                                        {console.log("44444444", eachFoodDish)}
-                                        <div className="card">
-                                            <img src={food} alt="Card" />
-                                            <div className="card__info">
-                                                <h5 className="">{eachFoodDish.name}</h5>
-                                                <p className=""><h6 className="">${eachFoodDish.price}</h6>
-                                                </p>
-                                                <button className="button" onClick={this.addToCartHandler} id={JSON.stringify(eachFoodDish)} key={eachFoodDish.name}>Add to Cart</button>
+
+                                    // <div className="food-dish" style={{backgroundImage: `url("/images/rest1.jpg")`}}>
+                                    <div className="food-dish">
+                                        <div className="row">
+                                            <div className="col-md-4 food-dish-image" style={{ backgroundImage: `url(` + mainImage + `)`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
                                             </div>
+                                            <div className="col-md-8 food-dish-data">
+                                                <h4 style={{ fontWeight: "bold" }}>{eachFoodDish.name}</h4>
+                                                <p>Famous Orange Sauce. Vegan friendly. Good on everything.</p>
+
+                                                <div className="price-and-addToCart">
+                                                    <p><span style={{ fontSize: "1.35em", marginRight: "25px" }}>${eachFoodDish.price}</span>
+                                                        <button id={JSON.stringify(eachFoodDish)} onClick={this.addToCartHandler} className="addToCartBtn">
+                                                            <i className="fa fa-shopping-cart addToCartSymbol" id={JSON.stringify(eachFoodDish)} style={{ fontSize: "24px" }}></i>
+                                                            <span style={{ marginTop: '-5px' }}>Add to Cart</span>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 );
-
                             })}
-                            {/* <br/> */}
                         </div>
                     </div>
+
+
+                    // <div key={menu.category} className="w-50 p-3 text-left">
+                    //     <h2 id={menu.category_name}>
+                    //         {menu.category_name}
+                    //     </h2>
+                    //     <div >
+                    //         {console.log("!!!!!!!!!!!!!!!!", menu.dishes)}
+                    //         {(menu.dishes).map(eachFoodDish => {
+                    //             //console.log(eachFoodDish);
+                    //             return (
+                    //                 <div className=" feature-box col-sm-3 ">
+                    //                     {console.log("44444444", eachFoodDish)}
+                    //                     <div className="card">
+                    //                         <img src={food} alt="Card" />
+                    //                         <div className="card__info">
+                    //                             <h5 className="">{eachFoodDish.name}</h5>
+                    //                             <p className=""><h6 className="">${eachFoodDish.price}</h6>
+                    //                             </p>
+                    //                             <button className="button" onClick={this.addToCartHandler} id={JSON.stringify(eachFoodDish)} key={eachFoodDish.name}>Add to Cart</button>
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //             );
+
+                    //         })}
+                    //         {/* <br/> */}
+                    //     </div>
+                    // </div>
                 );
             })
         }
@@ -138,9 +182,14 @@ class RestPro extends Component {
         return (
             <div>
                 <NavBar />
-                {/* <div className="row "> */}
-                {getMenu}
-                {/* </div> */}
+                <select name="itemtype" required onChange={this.resttypeChangeHandler}>
+                    <option selected value=''> -- select an option -- </option>
+                    <option value="delivery">Delivery</option>
+                    <option value="pickup">Pick Up</option>
+                </select>
+                <div className="mar-bor">
+                    {getMenu}
+                </div>
             </div>
         )
     }

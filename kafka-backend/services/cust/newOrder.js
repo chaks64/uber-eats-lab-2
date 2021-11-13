@@ -14,7 +14,7 @@ function handle_request(msg, callback) {
     let total_cost = msg.total_cost;
     let item = (msg.item);
 
-    const order = new Order({
+    const newOrder = new Order({
         order_status,
         order_type,
         address,
@@ -25,38 +25,38 @@ function handle_request(msg, callback) {
     });
 
 
-    order.save((err, order) => {
+    newOrder.save((err, order) => {
         if (err) {
             console.log(err);
             callback(null,"new order error please check")
         } else {
-
+            let order_id = order._id;
             Cust.findOne({username:username},(err, cust) => {
                 if (err) {
                     console.log(err);
                     callback(null, "Error Customer");
                 } else {
-                    console.log("here for cust order ",order._id);
-                    cust.order.push(order._id);
+                    console.log("here for cust order ",order_id);
+                    cust.order.push(order_id);
                     cust.save();
 
                 
-                    Rest.findOne({username:rest_id},(err, rest) => {
+                    Rest.findOne({_id:rest_id},(err, rest) => {
                         if (err) {
                             console.log(err);
                             callback(null, "Error Rest");
                         } else {
-                            console.log("here for rest order ",order._id);
-                            rest.order.push(order._id);
+                            console.log("here for rest order ",order_id);
+                            rest.order.push(order_id);
                             rest.save();
-                            console.log(order);
-                            callback(null,order);
+                            console.log(rest);
+                            callback(null,rest);
                         }
                     });
 
                     
-                    console.log(order);
-                    callback(null,order);
+                    console.log("12112",cust);
+                    callback(null,cust);
                 }
             });
         }
