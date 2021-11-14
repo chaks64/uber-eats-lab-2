@@ -20,6 +20,7 @@ export class RestOrder extends Component {
             postPerPage: 5,
             order_status: '',
             status: '',
+            isStatus: false,
 
         };
 
@@ -28,6 +29,8 @@ export class RestOrder extends Component {
         this.postperChange = this.postperChange.bind(this);
         this.orderStatusChangeHandler = this.orderStatusChangeHandler.bind(this);
         this.orderUpdateChangeHandler = this.orderUpdateChangeHandler.bind(this);
+        this.updateStatus = this.updateStatus.bind(this);
+        this.cancelOrder = this.cancelOrder.bind(this);
     }
 
     componentDidMount() {
@@ -51,8 +54,9 @@ export class RestOrder extends Component {
     }
 
     updateStatus = e => {
+        e.preventDefault();
         let abc = e.target.getAttribute("id");
-        console.log(abc);
+        console.log(e.target.getAttribute("id"));
         let data = {
              order_id : abc,
              order_status : "done"
@@ -66,7 +70,9 @@ export class RestOrder extends Component {
                 this.setState({
                     // order_list: JSON.parse(response.data),
                     // filter_order: JSON.parse(response.data),
+                    isStatus : true
                 });
+                (this.props.history.push("/home"))
                 // console.log("!@!@!@!@!@!", this.state.order_list.length);
             })
             .catch(err => {
@@ -75,6 +81,7 @@ export class RestOrder extends Component {
     }
 
     cancelOrder = e => {
+        e.preventDefault();
         let abc = e.target.getAttribute("id");
         console.log(abc);
         let data = {
@@ -90,7 +97,9 @@ export class RestOrder extends Component {
                 this.setState({
                     // order_list: JSON.parse(response.data),
                     // filter_order: JSON.parse(response.data),
+                    isStatus : true
                 });
+                (this.props.history.push("/home"))
                 // console.log("!@!@!@!@!@!", this.state.order_list.length);
             })
             .catch(err => {
@@ -211,10 +220,11 @@ export class RestOrder extends Component {
                                         <option value="new">New</option>
                                         <option value="received">Preparing</option>
                                         <option value="done">Delivered</option>
+                                        <option value="cancel">Cancelled</option>
                                     </select><br />
-                                    <button disabled={usertype} id={order._id._id} onClick={this.updateStatus}><i class="fa fa-pencil"></i></button>
+                                    <button disabled={usertype} id={order._id._id} onClick={this.updateStatus}><i class="fa fa-pencil" id={order._id._id}></i></button>
                                 </td>
-                                <td className="text-center">  <button disabled={yes} id={order._id._id} className={css}>Cancel</button></td>
+                                <td className="text-center">  <button disabled={yes} id={order._id._id} className={css} onClick={this.cancelOrder}>Cancel</button></td>
                                 <td className="text-center">{order._id.inst}</td>
                                 <td className="text-center"><button className="btn bg-transparent" id={JSON.stringify(order._id.item)} onClick={this.showModal}> Details </button></td>
                             </tr>

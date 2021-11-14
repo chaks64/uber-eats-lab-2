@@ -11,7 +11,8 @@ class RestPro extends Component {
             rest_id: this.props.location.state.rest_id,
             menu_list: [],
             resttype: this.props.location.state.resttype,
-            path: ''
+            path: '',
+            restname: '',
         };
     }
 
@@ -25,9 +26,11 @@ class RestPro extends Component {
             .then(response => {
                 this.setState({
                     menu_list: response.data.menu,
-                    path : response.data.path
+                    path : response.data.path,
+                    restname: response.data.restname
                 });
                 console.log("menu list", this.state.menu_list);
+                localStorage.setItem("restname",this.state.restname);
             })
             .catch(error => {
                 console.log(error);
@@ -101,7 +104,7 @@ class RestPro extends Component {
         if (this.state.menu_list !== "") {
             console.log('INSIDE RENDER METHOD')
             console.log(this.state.menu_list);
-            let mainImage = `"/images/rest1.jpg"`;
+            // let mainImage = `"/images/rest1.jpg"`;
             getMenu = this.state.menu_list.map(menu => {
                 return (
 
@@ -124,7 +127,7 @@ class RestPro extends Component {
                                     // <div className="food-dish" style={{backgroundImage: `url("/images/rest1.jpg")`}}>
                                     <div className="food-dish">
                                         <div className="row">
-                                            <div className="col-md-4 food-dish-image" style={{ backgroundImage: `url(` + mainImage + `)`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                                            <div className="col-md-4 food-dish-image" style={{ backgroundImage: `url(${eachFoodDish.path})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
                                             </div>
                                             <div className="col-md-8 food-dish-data">
                                                 <h4 style={{ fontWeight: "bold" }}>{eachFoodDish.name}</h4>

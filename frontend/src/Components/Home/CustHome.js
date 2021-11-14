@@ -100,7 +100,7 @@ export class CustHome extends Component {
             .then(response => {
                 this.setState({
                     restlist: JSON.parse(response.data),
-                    filterlist: response.data
+                    filterlist: JSON.parse(response.data)
                 });
             })
             .catch(error => {
@@ -172,7 +172,7 @@ export class CustHome extends Component {
             getRest = this.state.filterlist.map(rest => {
                 return (
                     <div className="eachRest" id={JSON.stringify(rest)}>
-                        <div id={JSON.stringify(rest)} className="rest-image" style={{ backgroundImage: `url("/images/rest1.jpg")`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                        <div id={JSON.stringify(rest)} className="rest-image" style={{ backgroundImage: `url(${rest.path})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
                             <i className="fa fa-heart a" style={{ fontSize: "20px", color: "white", padding: "10px", float: "right" }} id={JSON.stringify(rest._id)} key={rest._id} onClick={this.addFav}></i>
                         </div>
                         <p id={JSON.stringify(rest)} className="rest-name">{rest.restname} <span className="rating">{rest.rating}</span></p>

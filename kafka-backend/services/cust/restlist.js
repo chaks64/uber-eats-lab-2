@@ -17,25 +17,26 @@ async function handle_request(msg, callback) {
 
   Cust.findOne({ username: msg.username }, (err, result) => {
     if (result) {
-        console.log("found restlist");
-        Rest.find({})
+      console.log("found restlist");
+      Rest.find({})
         .exec((err, res) => {
-        if (err) {
-          console.log(err);
-          callback(null,"Customer does not exisits12121")
-        } else {
+          if (err) {
+            console.log(err);
+            callback(null, "Customer does not exisits12121")
+          } else {
+            console.log("121212121",result.pincode);
             res.forEach(function (element) {
-                element.pincode = Math.abs(element.pincode-12120);//12120 is cust pincode
+              element.pincode = Math.abs(element.pincode - result.pincode);//12120 is cust pincode
             });
-            
+
             res.sort((a, b) => a.pincode - b.pincode);
-            callback(null,JSON.stringify(res));
-        }
-      });
+            callback(null, JSON.stringify(res));
+          }
+        });
 
     } else {
-          console.log(err);
-          callback(null,"Customer does not exisits")
+      console.log(err);
+      callback(null, "Customer does not exisits")
     }
   });
 

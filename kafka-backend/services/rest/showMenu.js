@@ -69,13 +69,14 @@ async function handle_request(msg, callback) {
                     finalMenu.push(temp);
                 })
 
-                console.log("@@@@@@@@@@", finalMenu);
+                
 
                 let send = {
                     restname: menus.restname,
                     path : menus.path,
                     menu : finalMenu
                 }
+                console.log("@@@@@@@@@@", send);
                 callback(null, send);
             }
         });

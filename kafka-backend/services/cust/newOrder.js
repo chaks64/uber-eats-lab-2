@@ -14,6 +14,7 @@ function handle_request(msg, callback) {
     let total_cost = msg.total_cost;
     let item = (msg.item);
     let inst = msg.inst;
+    let rest_name = msg.restname;
 
     const newOrder = new Order({
         order_status,
@@ -22,6 +23,7 @@ function handle_request(msg, callback) {
         total_cost,
         //tax,
         //food_cost,
+        rest_name,
         inst,
         item
     });

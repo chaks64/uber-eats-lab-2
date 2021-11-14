@@ -91,6 +91,7 @@ export class Orders extends Component {
 
 
     cancelOrder = e => {
+        e.preventDefault();
         let abc = e.target.getAttribute("id");
         console.log(abc);
         let data = {
@@ -103,6 +104,7 @@ export class Orders extends Component {
         axios.post(`${config.backendURL}/rest/updateOrder`, data)
             .then(response => {
                 console.log(response.data);
+                (this.props.history.push("/home"))
                 this.setState({
                     // order_list: JSON.parse(response.data),
                     // filter_order: JSON.parse(response.data),
@@ -202,6 +204,7 @@ export class Orders extends Component {
                                         {/* <option value="cancel">Canclled</option> */}
                                         <option value="received">Preparing</option>
                                         <option value="done">Delivered</option>
+                                        <option value="cancel">Cancelled</option>
                                     </select><br />
                                     {/* <button disabled={usertype} id={order._id.order_status} onClick={this.updateStatus}><i class="fa fa-pencil"></i></button> */}
                                 </td>

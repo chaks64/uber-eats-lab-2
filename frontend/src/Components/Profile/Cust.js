@@ -177,7 +177,7 @@ export class Profile extends Component {
 
     updateProfile = (e) => {
         e.preventDefault();
-        console.log("update here");
+        
         const data = {
             _id: localStorage.getItem("user_id"),
             username: this.state.username,
@@ -189,9 +189,11 @@ export class Profile extends Component {
             state: this.state.state,
             pincode: this.state.pincode,
             path: this.state.path,
-            //country : this.state.country,
+            country : "USA",
             contact: this.state.contact,
         }
+        console.log("update here",data);
+
 
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
         axios.post(`${config.backendURL}/cust/updatecust`, data)

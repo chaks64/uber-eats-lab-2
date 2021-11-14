@@ -13,11 +13,11 @@ function handle_request(msg, callback) {
             lname: msg.lname,
             path: msg.path,
             pincode: msg.pincode,
-            // add1: msg.add1,
-            // add2: msg.add2,
-            // city: msg.city,
-            // state: msg.state,
-            // country: msg.country,
+            add1: msg.add1,
+            add2: msg.add2,
+            city: msg.city,
+            state: msg.state,
+            country: msg.country,
       
       },
       (err, result) => {

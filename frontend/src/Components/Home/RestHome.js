@@ -17,7 +17,8 @@ class RestHome extends Component {
             name: '',
             price: '',
             value: '',
-            path: ''
+            path: '',
+            restname: '',
         };
 
         this.showModal = this.showModal.bind(this);
@@ -40,9 +41,11 @@ class RestHome extends Component {
                 this.setState({
                     //menu_list : [],
                     menu_list: response.data.menu,
-                    path : response.data.path
+                    path : response.data.path,
+                    restname: response.data.restname
                 });
-                console.log("menu list", this.state.menu_list);
+                console.log("menu list", this.state.restname);
+                localStorage.setItem("restname",this.state.restname);
             })
             .catch(error => {
                 console.log(error);
@@ -126,7 +129,6 @@ class RestHome extends Component {
         if (this.state.menu_list !== "") {
             console.log('INSIDE RENDER METHOD')
             console.log(this.state.menu_list);
-            let mainImage = `"https://ubereats-chaks64.s3.us-east-2.amazonaws.com/images/1636879541452.png"`;
             getMenu = this.state.menu_list.map(menu => {
                // mainImage = `${menu.path}`
                 return (
@@ -142,7 +144,7 @@ class RestHome extends Component {
                                             </div>
                                             <div className="col-md-8 food-dish-data">
                                                 <h4 style={{ fontWeight: "bold" }}>{eachFoodDish.name}</h4>
-                                                <p>Famous Orange Sauce. Vegan friendly. Good on everything.</p>
+                                                <p>{eachFoodDish.description}.</p>
                                                 <div className="price-and-addToCart">
                                                     <p><span style={{ fontSize: "1.35em", marginRight: "25px" }}>${eachFoodDish.price}</span>
                                                         <button id={JSON.stringify(eachFoodDish)} className="addToCartBtn">

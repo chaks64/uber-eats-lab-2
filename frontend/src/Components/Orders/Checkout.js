@@ -30,7 +30,6 @@ export class Checkout extends Component {
         this.setState({
             foodcost: cost
         })
-        console.log(this.state.foodcost);
 
         this.setState({
             tax: cost * 0.09
@@ -92,7 +91,6 @@ export class Checkout extends Component {
         this.setState({
             foodcost: cost
         })
-        console.log(this.state.foodcost);
 
         this.setState({
             tax: cost * 0.09
@@ -149,6 +147,7 @@ export class Checkout extends Component {
         const data = {
             username: localStorage.getItem('username'),
             rest_id: cart.restaurant_id,
+            restname: localStorage.getItem('restname'),
             order_status: 'new',
             order_type: 'delivery',
             address: "",
@@ -161,7 +160,7 @@ export class Checkout extends Component {
         axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
         axios.post(`${config.backendURL}/cust/neworder`, data)
             .then(response => {
-                console.log(response.data);
+                console.log('!@!@!!@!@!@!@!@!',response.data._id);
                 this.setState({
                     //  rest_list : a
 
@@ -191,7 +190,7 @@ export class Checkout extends Component {
         if (localStorage.getItem('UBER_EATS_CART') !== null) {
             let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
             let a = cart.menu_items;
-            console.log(cart);
+            // console.log(cart);
             checkout = a.map(eachItem => {
                 // if (eachItem !== null) {
                 return (
