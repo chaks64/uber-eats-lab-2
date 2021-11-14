@@ -10,6 +10,7 @@ function handle_request(msg, callback) {
         description: msg.description,
         type: msg.type,
         price: msg.price,
+        path: msg.path
     }
 
     Rest.findOne({ _id: rest_id }, (err, rest) => {

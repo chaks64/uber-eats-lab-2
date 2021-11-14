@@ -13,6 +13,7 @@ function handle_request(msg, callback) {
     let address = msg.address;
     let total_cost = msg.total_cost;
     let item = (msg.item);
+    let inst = msg.inst;
 
     const newOrder = new Order({
         order_status,
@@ -21,6 +22,7 @@ function handle_request(msg, callback) {
         total_cost,
         //tax,
         //food_cost,
+        inst,
         item
     });
 
@@ -36,7 +38,6 @@ function handle_request(msg, callback) {
                     console.log(err);
                     callback(null, "Error Customer");
                 } else {
-                    console.log("here for cust order ",order_id);
                     cust.order.push(order_id);
                     cust.save();
 
@@ -46,17 +47,14 @@ function handle_request(msg, callback) {
                             console.log(err);
                             callback(null, "Error Rest");
                         } else {
-                            console.log("here for rest order ",order_id);
                             rest.order.push(order_id);
                             rest.save();
-                            console.log(rest);
-                            callback(null,rest);
+                            callback(null,order);
                         }
                     });
 
                     
-                    console.log("12112",cust);
-                    callback(null,cust);
+                    callback(null,order);
                 }
             });
         }

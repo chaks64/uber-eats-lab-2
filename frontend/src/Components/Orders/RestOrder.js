@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import Modal from '../Modal/Modal';
 import Paginate from './Pagination';
 
-export class Orders extends Component {
+export class RestOrder extends Component {
 
     constructor(props) {
         super(props);
@@ -50,45 +50,29 @@ export class Orders extends Component {
             });
     }
 
-    updateStatus = e =>{
-        let status = e.target.getAttribute("id");
-        console.log(status);
+    updateStatus = e => {
+        let abc = e.target.getAttribute("id");
+        console.log(abc);
+        let data = {
+             order_id : abc,
+             order_status : "done"
+        }
+        
+        console.log("going for order update",data);
+        axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
+        axios.post(`${config.backendURL}/rest/updateOrder`, data)
+            .then(response => {
+                console.log(response.data);
+                this.setState({
+                    // order_list: JSON.parse(response.data),
+                    // filter_order: JSON.parse(response.data),
+                });
+                // console.log("!@!@!@!@!@!", this.state.order_list.length);
+            })
+            .catch(err => {
+
+            });
     }
-
-    orderUpdateChangeHandler = e =>{
-        this.setState({
-            status: e.target.value,
-           //clicked
-        }) 
-    }
-
-
-    showModal = (e) => {
-        e.preventDefault();
-        console.log("!!!!!!!!!!!!!!!!!!!", (e.target.getAttribute("id")));
-
-        this.setState({
-            items_list: JSON.parse(e.target.getAttribute("id"))
-        })
-
-
-        this.setState({
-            show: true,
-        });
-    }
-
-    hideModal = () => {
-        this.setState({
-            show: false,
-        });
-    }
-
-    postperChange = (e) => {
-        this.setState({
-            postPerPage: e.target.value
-        })
-    }
-
 
     cancelOrder = e => {
         let abc = e.target.getAttribute("id");
@@ -113,6 +97,40 @@ export class Orders extends Component {
 
             });
     }
+
+    orderUpdateChangeHandler = e => {
+        this.setState({
+            status: e.target.value,
+            //clicked
+        })
+    }
+
+
+    showModal = (e) => {
+        console.log("!!!!!!!!!!!!!!!!!!!", (e.target.getAttribute("id")));
+
+        this.setState({
+            items_list: JSON.parse(e.target.getAttribute("id"))
+        })
+
+
+        this.setState({
+            show: true,
+        });
+    }
+
+    hideModal = () => {
+        this.setState({
+            show: false,
+        });
+    }
+
+    postperChange = (e) => {
+        this.setState({
+            postPerPage: e.target.value
+        })
+    }
+
 
     orderStatusChangeHandler = (e) => {
         e.preventDefault();
@@ -140,9 +158,6 @@ export class Orders extends Component {
             });
         }
     }
-
-
-    
 
 
     render() {
@@ -182,37 +197,27 @@ export class Orders extends Component {
                     yes = true;
                     css = 'custom-btn bg-transparent';
                 }
-
-                // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%",order._id.item);
                 // if(order.order_status !==)
                 return (
-
                     <table className="styled-table">
                         <tbody>
                             <tr>
-
                                 <td className="text-center">{order._id._id}</td>
                                 <td className="text-center">{order._id.rest_name}</td>
                                 <td className="text-center">${order._id.total_cost}</td>
-
                                 <td>
-                                    <select className="select1" id="qqqq" key={order._id._id} name="orderupdate" defaultValue={order._id.order_status} /*value={this.state.status}*/ disabled={usertype} onChange={this.orderUpdateChangeHandler}>
+                                    <select className="select1" id="qqqq" key={order._id._id} name="status" defaultValue={order._id.order_status} /*value={this.state.status}*/ disabled={usertype} onChange={this.orderUpdateChangeHandler}>
                                         <option value=''>Order Status</option>
                                         <option value="new">New</option>
-                                        {/* <option value="cancel">Canclled</option> */}
                                         <option value="received">Preparing</option>
                                         <option value="done">Delivered</option>
                                     </select><br />
-                                    {/* <button disabled={usertype} id={order._id.order_status} onClick={this.updateStatus}><i class="fa fa-pencil"></i></button> */}
+                                    <button disabled={usertype} id={order._id._id} onClick={this.updateStatus}><i class="fa fa-pencil"></i></button>
                                 </td>
-
-
-                                <td className="text-center">  <button disabled={yes} className={css} id={order._id._id} onClick={this.cancelOrder}>Cancel</button></td>
+                                <td className="text-center">  <button disabled={yes} id={order._id._id} className={css}>Cancel</button></td>
                                 <td className="text-center">{order._id.inst}</td>
-
                                 <td className="text-center"><button className="btn bg-transparent" id={JSON.stringify(order._id.item)} onClick={this.showModal}> Details </button></td>
                             </tr>
-
                         </tbody>
                     </table>
                 )
@@ -268,7 +273,7 @@ export class Orders extends Component {
 
                         {this.state.items_list.map(eachItem => {
                             let eachCost = eachItem.qty * eachItem.price;
-                            console.log("<<<<<<<<<<<<<>>>>>>>>>>>>",eachItem)
+
                             totalCost = totalCost + eachCost;
                             return (
                                 <table className="styled-table" id={eachItem} key={eachItem}>
@@ -287,7 +292,7 @@ export class Orders extends Component {
 
                         )}
 
-                        <table className="styled-table"  >
+                        <table className="styled-table">
                             <tbody>
                                 <tr>
                                     <td className="text-center">Tax</td>
@@ -300,7 +305,6 @@ export class Orders extends Component {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </Modal>
 
@@ -319,7 +323,7 @@ export class Orders extends Component {
                     Past Orders
                 </div>
                 <div>
-                    <select className="select1"  name="orderstatus" required onChange={this.orderStatusChangeHandler}>
+                    <select className="select1" name="orderstatus" required onChange={this.orderStatusChangeHandler}>
                         <option value='all'>All Orders</option>
                         <option value="new">New</option>
                         <option value="cancel">Canclled</option>
@@ -359,4 +363,4 @@ export class Orders extends Component {
     }
 }
 
-export default Orders
+export default RestOrder

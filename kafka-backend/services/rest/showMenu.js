@@ -15,17 +15,14 @@ async function handle_request(msg, callback) {
 
     console.log(rest_id);
 
-    Rest.findOne({ _id: rest_id })
-        .select("menu")
-        .exec(function (err, menus) {
+    Rest.findOne({ _id: rest_id }, function (err, menus) {
             if (err) {
                 return handleError(err);
             } else {
-                console.log((menus.menu));
+                console.log(("!!!!!!!!!!!!!!!!!!!!!!!!!!",menus.path));
                 let resultset = (menus.menu);
                 const menu = new Map();
                 resultset.forEach(menuItem => {
-                    console.log("99999999999999", menuItem);
                     let category = menuItem.category;
                     let itemArray = menu.get(category)
                     if (itemArray) {
@@ -36,7 +33,8 @@ async function handle_request(msg, callback) {
                             price: menuItem.price,
                             // restid: menuItem.rest_id,
                             category: menuItem.category,
-                            type: menuItem.type
+                            type: menuItem.type,
+                            path: menuItem.path
                         };
                         itemArray.push(item);
                         menu.set(category, itemArray);
@@ -49,7 +47,8 @@ async function handle_request(msg, callback) {
                             price: menuItem.price,
                             // restid: menuItem.rest_id,
                             category: menuItem.category,
-                            type: menuItem.type
+                            type: menuItem.type,
+                            path: menuItem.path
                         };
                         itemArray = [item];
                         menu.set(category, itemArray);
@@ -72,8 +71,12 @@ async function handle_request(msg, callback) {
 
                 console.log("@@@@@@@@@@", finalMenu);
 
-
-                callback(null, finalMenu);
+                let send = {
+                    restname: menus.restname,
+                    path : menus.path,
+                    menu : finalMenu
+                }
+                callback(null, send);
             }
         });
 

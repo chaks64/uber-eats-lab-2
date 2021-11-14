@@ -2,7 +2,7 @@ let Rest = require("../../models/restModel");
 
 async function handle_request(msg, callback) { 
     try {
-        const { rest_id, restname, add1,add2,city, state, pincode, resttype, fee, time, rating, contact} = msg;
+        const { rest_id, restname, add1,add2,city, state, pincode, resttype, fee, time, rating, contact, path} = msg;
 
         const update = {
             restname: restname,
@@ -15,7 +15,8 @@ async function handle_request(msg, callback) {
             add1: add1,
             add2: add2,
             rating: rating,
-            contact: contact
+            contact: contact,
+            path: path
         }
         const result = await Rest.findByIdAndUpdate(rest_id, update, { new:true });
         callback(null, {status_code: 200, response: result});

@@ -16,13 +16,14 @@ class RestHome extends Component {
             show: false,
             name: '',
             price: '',
-            value: ''
+            value: '',
+            path: ''
         };
 
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.updateMenu = this.updateMenu.bind(this);
+        // this.updateMenu = this.updateMenu.bind(this);
         // this.itemChange = this.itemChange.bind(this);
     }
 
@@ -38,7 +39,8 @@ class RestHome extends Component {
 
                 this.setState({
                     //menu_list : [],
-                    menu_list: (response.data)
+                    menu_list: response.data.menu,
+                    path : response.data.path
                 });
                 console.log("menu list", this.state.menu_list);
             })
@@ -57,38 +59,38 @@ class RestHome extends Component {
         });
     }
 
-    updateMenu = (e) => {
+    // updateMenu = (e) => {
 
-        console.log("hello for update");
-        let item = e.target.getAttribute("id");
+    //     console.log("hello for update");
+    //     let item = e.target.getAttribute("id");
 
-        const data = {
-            rest_id: this.state.rest_id,
-            item_id: item.item_id,
-            item_name: item.name,
-            category: item.category,
-            description: item.description,
-            item_price: item.price,
-            type: item.type
-        }
+    //     const data = {
+    //         rest_id: this.state.rest_id,
+    //         item_id: item.item_id,
+    //         item_name: item.name,
+    //         category: item.category,
+    //         description: item.description,
+    //         item_price: item.price,
+    //         type: item.type
+    //     }
 
-        axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
-        axios.post(`${config.backendURL}/rest/editMenu`, data)
-            .then(response => {
+    //     axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
+    //     axios.post(`${config.backendURL}/rest/editMenu`, data)
+    //         .then(response => {
 
-                // this.setState({
-                //     //menu_list : [],
-                //     menu_list: (response.data)
-                // });
-                console.log("menu list", response);
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({
-                    //  message: error.response
-                })
-            });
-    }
+    //             // this.setState({
+    //             //     //menu_list : [],
+    //             //     menu_list: (response.data)
+    //             // });
+    //             console.log("menu list", response);
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //             this.setState({
+    //                 //  message: error.response
+    //             })
+    //         });
+    // }
 
 
     showModal = (e) => {
@@ -124,8 +126,9 @@ class RestHome extends Component {
         if (this.state.menu_list !== "") {
             console.log('INSIDE RENDER METHOD')
             console.log(this.state.menu_list);
-            let mainImage = `"/images/rest1.jpg"`;
+            let mainImage = `"https://ubereats-chaks64.s3.us-east-2.amazonaws.com/images/1636879541452.png"`;
             getMenu = this.state.menu_list.map(menu => {
+               // mainImage = `${menu.path}`
                 return (
                     <div key={menu.category_name} className="menu-category-box">
                         <h2 style={{ fontWeight: "bold" }} id={menu.category_name}>{menu.category_name}</h2>
@@ -135,7 +138,7 @@ class RestHome extends Component {
                                 return (
                                     <div className="food-dish">
                                         <div className="row">
-                                            <div className="col-md-4 food-dish-image" style={{ backgroundImage: `url(` + mainImage + `)`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                                            <div className="col-md-4 food-dish-image" style={{ backgroundImage: `url(${eachFoodDish.path})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
                                             </div>
                                             <div className="col-md-8 food-dish-data">
                                                 <h4 style={{ fontWeight: "bold" }}>{eachFoodDish.name}</h4>
@@ -150,7 +153,8 @@ class RestHome extends Component {
                                                                     price: eachFoodDish.price,
                                                                     category: eachFoodDish.category,
                                                                     type: eachFoodDish.type,
-                                                                    description: eachFoodDish.description
+                                                                    description: eachFoodDish.description,
+                                                                    path: eachFoodDish.path
                                                                 }
                                                             }}>
                                                                 <i className="fa fa-edit addToCartSymbol" id={JSON.stringify(eachFoodDish)} style={{ fontSize: "24px" }}></i>
@@ -176,6 +180,8 @@ class RestHome extends Component {
         return (
             <div>
                 <NavBar />
+                <div className="bgimg" style={{ backgroundImage: `url(${this.state.path})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                </div>
                 <div className="mar-bor">
                     {getMenu}
                 </div>

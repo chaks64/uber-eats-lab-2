@@ -14,6 +14,7 @@ var restsSchema = new Schema({
     fee:{type: Number},
     time:{type: String},
     contact:{type: Number},
+    path: {type: String},
     menu:[
       { 
        // _id : {type: String},
@@ -22,6 +23,7 @@ var restsSchema = new Schema({
         description:{type: String},
         price :{type: Number},
         type :{type: String},
+        path:{type: String},
       },
     ],
     order:[

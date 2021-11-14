@@ -7,6 +7,7 @@ import { CountryDropdown } from 'react-country-region-selector';
 import { config } from '../../config/config';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import FormData from 'form-data';
 // import * as moment from 'moment'
 
 export class Profile extends Component {
@@ -25,7 +26,8 @@ export class Profile extends Component {
             country: '',
             contact: '',
             dob: '',
-            image: '',
+            image1: '',
+            path: '',
 
             message: '',
             isUpdate: false
@@ -38,10 +40,10 @@ export class Profile extends Component {
 
     componentDidMount() {
         const data = {
-            username : this.state.username,
+            username: this.state.username,
         }
 
-        console.log("profile before",data);
+        console.log("profile before", data);
         axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
         axios.post(`${config.backendURL}/cust/custprofile`, data)
             .then(response => {
@@ -56,6 +58,7 @@ export class Profile extends Component {
                     pincode: response.data.pincode,
                     country: response.data.country,
                     contact: response.data.contact,
+                    path: response.data.path
                     // dob: response.data.dob,
 
                 })
@@ -125,15 +128,58 @@ export class Profile extends Component {
             dob: date
         });
 
-       // const NewDate = moment(this.state.dob, 'MM-DD-YYYY').format();
+        // const NewDate = moment(this.state.dob, 'MM-DD-YYYY').format();
         console.log(this.state.dob);
     }
+
+
+    fileSelector = (e) => {
+        let data = new FormData();
+        data.append('file', e.target.files[0], e.target.files[0].name)
+        console.log(this.state.image1);
+        axios.post(`${config.backendURL}/update`,
+            data, {
+            headers: { "Content-Type": "multipart/form-data", }
+            ,
+        })
+            .then(response => {
+                console.log(response.data.Location);
+                this.setState({
+                    path: response.data.Location
+                })
+            })
+            .catch(err => {
+                console.log('err')
+            });
+    }
+
+    // uploadImg = (e) => {
+    //     let data = new FormData();
+    //     data.append('file', this.state.image1,this.state.image1.name)
+    //     console.log(this.state.image1);
+    //     axios.post('http://localhost:3001/update',
+    //         data, {
+    //         headers: { "Content-Type": "multipart/form-data", }
+    //         ,
+    //     })
+    //         .then(response => {
+    //             console.log(response.data.Location);
+    //             this.setState({
+    //                 path : response.data.Location
+    //             })
+    //         })
+    //         .catch(err => {
+    //             console.log('err')
+    //         });
+    // }
+
+    //  uploadImg = (e)
 
     updateProfile = (e) => {
         e.preventDefault();
         console.log("update here");
         const data = {
-            _id : localStorage.getItem("user_id"),
+            _id: localStorage.getItem("user_id"),
             username: this.state.username,
             fname: this.state.fname,
             lname: this.state.lname,
@@ -142,6 +188,7 @@ export class Profile extends Component {
             city: this.state.city,
             state: this.state.state,
             pincode: this.state.pincode,
+            path: this.state.path,
             //country : this.state.country,
             contact: this.state.contact,
         }
@@ -149,10 +196,7 @@ export class Profile extends Component {
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
         axios.post(`${config.backendURL}/cust/updatecust`, data)
             .then(response => {
-                this.setState({
-                    isUpdate: true
-                });
-                ;
+                (this.props.history.push("/custhome"))
             })
             .catch(err => {
                 console.log(err);
@@ -164,11 +208,11 @@ export class Profile extends Component {
         if (!(localStorage.getItem("username"))) {
             console.log("here for profile");
             return (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                }}
-              ></Redirect>
+                <Redirect
+                    to={{
+                        pathname: "/login",
+                    }}
+                ></Redirect>
             );
         }
 
@@ -178,7 +222,7 @@ export class Profile extends Component {
         // }
 
         return (
-            
+
             <div>
                 {/* {redierctHome} */}
                 {console.log(this.state.dob)}
@@ -190,10 +234,10 @@ export class Profile extends Component {
                     <div className="row">
                         <div className="col-sm-3">
                             <div className="text-center">
-                                <img src={'Untitled.png'} className="img-circle img-thumbnail" alt="avatar"/>   
+                                <img src={this.state.path} className="img-circle img-thumbnail" alt="avatar" />
                                 {/* <img src={this.state.image} alt="avatar" /> */}
                                 <h6>Upload a different photo...</h6>
-                                <input type="file" name="image" className="avatar text-center center-block file-upload" multiple={false} onChange={this.fileSelector} />
+                                <input type="file" name="path" className="avatar text-center center-block file-upload" multiple={false} onChange={this.fileSelector} />
                                 {/* <button className="btn btn-lg btn-success" type="submit" onClick={this.uploadImg}><i className="glyphicon glyphicon-ok-sign"></i> Upload</button> */}
                             </div><br />
                         </div>
@@ -272,7 +316,7 @@ export class Profile extends Component {
                                         <div className="form-group">
                                             <div className="col-xs-6">
                                                 <label for="dob"><h4>Date of Birth</h4></label>
-                                                <DatePicker className="form-control" dateFormat="MM/dd/yyyy" value={this.state.dob} selected={this.state.dob} onChange={this.dobChangeHandler} name="startDate"  title="Date of Birth"/>
+                                                <DatePicker className="form-control" dateFormat="MM/dd/yyyy" value={this.state.dob} selected={this.state.dob} onChange={this.dobChangeHandler} name="startDate" title="Date of Birth" />
                                                 {/* <input type="date" className="form-control" value={this.state.dob} onChange={this.dobChangeHandler} id="state" placeholder="State" title="Date of Birth" /> */}
                                             </div>
                                         </div>

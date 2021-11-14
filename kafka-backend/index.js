@@ -35,6 +35,7 @@ var showFav = require("./services/cust/showFav");
 var addAddress = require("./services/cust/addAddress");
 var showOrders = require("./services/cust/showOrders");
 var showReceipt = require("./services/cust/showReceipt");
+var searchRest = require("./services/cust/searchRest");
 
 var itemlist = require("./services/rest/itemlist");
 var showMenu = require("./services/rest/showMenu");
@@ -43,6 +44,8 @@ var editMenu = require("./services/rest/editMenu");
 var updateRest = require("./services/rest/updateRest");
 var updateOrder = require("./services/rest/updateOrder");
 var restProfile = require("./services/rest/restProfile");
+
+
 
 
 function handleTopicRequest(topic_name,fname){
@@ -98,3 +101,4 @@ handleTopicRequest("editMenu",editMenu);
 handleTopicRequest("updateRest",updateRest);
 handleTopicRequest("updateOrder",updateOrder);
 handleTopicRequest("restProfile",restProfile);
+handleTopicRequest("searchRest",searchRest);

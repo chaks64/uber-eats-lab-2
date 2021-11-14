@@ -129,4 +129,14 @@
     .mar-bor {
       display: flex;
       flex-wrap: wrap;
+      /* padding-left: 5%; */
+  }
+
+  .bgimg{
+    margin-top: 0px;
+    margin-bottom: 10px;
+    height: 24rem;
+    width: 100%;
+    background-color: lightgray; 
+    
   }

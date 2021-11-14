@@ -7,13 +7,14 @@ const multerObject = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 
 async function handle_request(msg, callback) { 
     try {
         // const { item_id, dishName, ingredients, price,  description, category,restId, mealType, dishImage} = msg;
-        const {rest_id, item_id, item_name,category,description,price,type} = msg;
+        const {rest_id, item_id, item_name,category,description,price,type,path} = msg;
         const update = {
             name : item_name,
             category : category,
             description : description,
             price : price,
             type : type,
+            path: path
         }
         const rest = await Rest.findById(rest_id);
         let dish = rest.menu.find(o => String(o._id) === item_id);

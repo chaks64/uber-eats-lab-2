@@ -132,3 +132,12 @@
       padding-left: 5%;
       /* margin-left: 200px; */
   }
+  
+  .bgimg{
+    margin-top: 0px;
+    margin-bottom: 10px;
+    height: 24rem;
+    width: 100%;
+    background-color: aqua; 
+    
+  }

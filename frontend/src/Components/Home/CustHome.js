@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
-import './custHome.css'
-//import './Card.css'
-// import { connect } from 'react-redux';
-// import food from './food.png';
-// import Toggle from 'react-toggle';
+import './custHome.css';
 import NavBar from '../NavBar/NavBar';
 import { Link } from 'react-router-dom';
 
@@ -18,15 +14,15 @@ export class CustHome extends Component {
             restlist: "",
             filterlist: "",
             searchString: "",
-            // resttype:"",
 
             message: "",
 
         };
-
-        // this.showModal = this.showModal.bind(this);
-        // this.hideModal = this.hideModal.bind(this);
         this.addFav = this.addFav.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.searchHandle = this.searchHandle.bind(this);
+        this.resttypeChangeHandler = this.resttypeChangeHandler.bind(this);
+        this.inputSearchHandler = this.inputSearchHandler.bind(this);
     }
 
     componentDidMount = () => {
@@ -41,7 +37,7 @@ export class CustHome extends Component {
             .then(response => {
                 this.setState({
                     restlist: JSON.parse(response.data),
-                    filterlist: response.data
+                    filterlist: JSON.parse(response.data)
                 });
             })
             .catch(error => {
@@ -59,20 +55,60 @@ export class CustHome extends Component {
         });
     }
 
+    searchHandle = (e) => {
+        this.setState({
+            searchString: e.target.value
+        })
+    }
+
     resttypeChangeHandler = (e) => {
         e.preventDefault();
         let resttype = e.target.value;
-        console.log("****************",resttype);
-        resttype = "both";
-        
-        var arr = JSON.parse(this.state.filterlist);
-        console.log('array after parse', arr);
-        console.log(typeof (arr));
-        var filteredList = arr.filter(restaurant => restaurant.resttype === resttype);
-        console.log('array after filtering', filteredList);
-        this.setState({
-            restlist: (filteredList)
-        });
+
+        if (resttype === 'all') {
+            this.setState({
+                filterlist: this.state.restlist
+            })
+        } else {
+            this.setState({
+                filterlist: ""
+            })
+            console.log("****************", resttype);
+            //resttype = "both";
+            var filteredList =[];
+            var arr = (this.state.restlist);
+            console.log('array after parse', arr);
+            console.log(typeof (arr));
+            filteredList = arr.filter(restaurant => restaurant.resttype === resttype);
+            console.log('array after filtering', filteredList);
+
+            this.setState({
+                filterlist: (filteredList)
+            });
+        }
+    }
+
+    inputSearchHandler = (e) => {
+        e.preventDefault();
+        let data = {
+            search: this.state.searchString
+        }
+
+        console.log("here to search", data);
+        axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
+        axios.post(`${config.backendURL}/cust/searchRest`, data)
+            .then(response => {
+                this.setState({
+                    restlist: JSON.parse(response.data),
+                    filterlist: response.data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    message: error.response
+                })
+            });
     }
 
 
@@ -107,19 +143,6 @@ export class CustHome extends Component {
 
     }
 
-    // showModal = () => {
-    //     this.setState({ show: true });
-
-    //     if (JSON.parse(localStorage.getItem('UBER_EATS_CART')) == null) {
-    //         alert('Cart is Empty');
-    //     }
-    // };
-
-    // hideModal = () => {
-    //     this.setState({ show: false });
-    // }
-
-
     render() {
 
         if (!(localStorage.getItem("username"))) {
@@ -137,7 +160,8 @@ export class CustHome extends Component {
             <div className="row" id="search-box">
                 <form onSubmit={this.inputSearchHandler}>
                     <div className="form-group">
-                        <input id="searchBar" type="search" style={{ width: "50%", margin: "auto" }} onChange={this.handleInputChange} className="form-control input-md" name="searchString" value={this.state.searchString} placeholder="What are you craving for? " />
+                        <input id="searchBar" type="search" style={{ width: "50%", margin: "auto" }} onChange={this.searchHandle} className="form-control input-md" name="searchString" value={this.state.searchString} placeholder="What are you craving for? " />
+                        <button type="submit" class="btn"><i class="fa fa-search"></i></button>
                     </div>
                 </form>
             </div>
@@ -145,7 +169,7 @@ export class CustHome extends Component {
 
         let getRest = null;
         if (this.state.restlist !== "") {
-            getRest = this.state.restlist.map(rest => {
+            getRest = this.state.filterlist.map(rest => {
                 return (
                     <div className="eachRest" id={JSON.stringify(rest)}>
                         <div id={JSON.stringify(rest)} className="rest-image" style={{ backgroundImage: `url("/images/rest1.jpg")`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
@@ -157,7 +181,8 @@ export class CustHome extends Component {
                             <Link to={{
                                 pathname: "/restpro", state: {
                                     rest_id: rest._id,
-                                    restname: rest.restname
+                                    restname: rest.restname,
+                                    resttype: rest.resttype
                                 }
                             }}>
                                 See Menu</Link>
@@ -174,13 +199,13 @@ export class CustHome extends Component {
                 <NavBar />
                 {searchBar}
 
-                <select name="itemtype"  required onChange={this.resttypeChangeHandler}>
-                    <option selected value=''> -- select an option -- </option>
+                <select className="select1" name="itemtype" required onChange={this.resttypeChangeHandler}>
+                    <option selected value='all'>Both</option>
                     <option value="delivery">Delivery</option>
                     <option value="pickup">Pick Up</option>
                 </select>
 
-                <div className="mar-bor"> 
+                <div className="mar-bor">
 
                     {getRest}
 

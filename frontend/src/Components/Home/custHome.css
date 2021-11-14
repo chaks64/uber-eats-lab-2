@@ -107,3 +107,16 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.select1 {
+    margin-bottom: 5px;
+    width: 150px;
+    height: 35px;
+    padding: 5px 30px 5px 5px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* background: url("/uploads/media/default/0001/02/f7b4d3d2ba3fe1d8518e6e63d7740e1e73921abf.png") 96% / 15% no-repeat #eee; */
+  }

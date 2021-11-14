@@ -28,6 +28,7 @@ class Profile_Rest extends Component {
             fee: '',
             time: '',
             rating: '',
+            path: '',
             //image: '',
 
             message: ''
@@ -54,7 +55,8 @@ class Profile_Rest extends Component {
                     pincode: response.data.pincode,
                     phone: response.data.contact,
                     resttype: response.data.resttype,
-                    time: response.data.time
+                    time: response.data.time,
+                    path: response.data.path
                 })
 
             })
@@ -117,25 +119,26 @@ class Profile_Rest extends Component {
     }
 
 
-    // fileSelector = (e) => {
-    //     console.log("here for image update");
-    //     this.setState({ image: e.target.files[0] })
+    fileSelector = (e) => {
+        let data = new FormData();
+        data.append('file', e.target.files[0], e.target.files[0].name)
+        axios.post('http://localhost:3001/update',
+            data, {
+            headers: { "Content-Type": "multipart/form-data", }
+            ,
+        })
+            .then(response => {
+                console.log(response.data.Location);
+                this.setState({
+                    path: response.data.Location
+                })
+            })
+            .catch(err => {
+                console.log('err')
+            });
 
-    //     const file = e.target.files[0]
+    }
 
-    //     console.log(e.target.files[0]);
-    //     let data = new FormData();
-    //     data.append('image', file);
-    //     // data.append('username',this.state.username);
-    //     console.log("see data here", data);
-    //     axios.post('http://localhost:3001/proimage', data)
-    //         .then(response => {
-    //             this.props.history.push("/home");
-    //         })
-    //         .catch(err => {
-
-    //         });
-    // }
 
     updateProfile = (e) => {
         e.preventDefault();
@@ -153,6 +156,7 @@ class Profile_Rest extends Component {
             time: this.state.time,
             rating: this.state.rating,
             contact: this.state.phone,
+            path: this.state.path
         }
 
         axios.post(`${config.backendURL}/rest/updateRest`, data)
@@ -195,10 +199,9 @@ class Profile_Rest extends Component {
                     <div className="row">
                         <div className="col-sm-3">
                             <div className="text-center">
-                                {/* <img src={'Untitled.png'} className="img-circle img-thumbnail" alt="avatar"/> */}
-                                <img src={this.state.image} alt="avatar" />
+                                <img src={this.state.path} className="img-circle img-thumbnail" alt="avatar" />
                                 <h6>Upload a different photo...</h6>
-                                <input type="file" name="image" className="avatar text-center center-block file-upload" multiple={false} onChange={this.fileSelector} />
+                                <input type="file" name="path" className="avatar text-center center-block file-upload" multiple={false} onChange={this.fileSelector} />
                             </div><br />
                         </div>
                         <div className="col-sm-9">

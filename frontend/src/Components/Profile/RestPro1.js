@@ -9,7 +9,9 @@ class RestPro extends Component {
         super(props);
         this.state = {
             rest_id: this.props.location.state.rest_id,
-            menu_list: []
+            menu_list: [],
+            resttype: this.props.location.state.resttype,
+            path: ''
         };
     }
 
@@ -17,14 +19,13 @@ class RestPro extends Component {
         const data = {
             rest_id: this.state.rest_id
         }
-
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",this.state.resttype);
         axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
         axios.post(`${config.backendURL}/rest/showMenu`, data)
             .then(response => {
-
                 this.setState({
-                    //menu_list : [],
-                    menu_list: (response.data)
+                    menu_list: response.data.menu,
+                    path : response.data.path
                 });
                 console.log("menu list", this.state.menu_list);
             })
@@ -106,7 +107,7 @@ class RestPro extends Component {
 
 
                     <div key={menu.category} className="menu-category-box">
-                        <h2 style={{ fontWeight: "bold" }} id={menu.category}>{menu.category}</h2>
+                        <h3 style={{ fontWeight: "bold" }} id={menu.category}>{menu.category_name}</h3>
                         <div className="food-dish-list">
                             {(menu.dishes).map(eachFoodDish => {
 
@@ -145,35 +146,6 @@ class RestPro extends Component {
                             })}
                         </div>
                     </div>
-
-
-                    // <div key={menu.category} className="w-50 p-3 text-left">
-                    //     <h2 id={menu.category_name}>
-                    //         {menu.category_name}
-                    //     </h2>
-                    //     <div >
-                    //         {console.log("!!!!!!!!!!!!!!!!", menu.dishes)}
-                    //         {(menu.dishes).map(eachFoodDish => {
-                    //             //console.log(eachFoodDish);
-                    //             return (
-                    //                 <div className=" feature-box col-sm-3 ">
-                    //                     {console.log("44444444", eachFoodDish)}
-                    //                     <div className="card">
-                    //                         <img src={food} alt="Card" />
-                    //                         <div className="card__info">
-                    //                             <h5 className="">{eachFoodDish.name}</h5>
-                    //                             <p className=""><h6 className="">${eachFoodDish.price}</h6>
-                    //                             </p>
-                    //                             <button className="button" onClick={this.addToCartHandler} id={JSON.stringify(eachFoodDish)} key={eachFoodDish.name}>Add to Cart</button>
-                    //                         </div>
-                    //                     </div>
-                    //                 </div>
-                    //             );
-
-                    //         })}
-                    //         {/* <br/> */}
-                    //     </div>
-                    // </div>
                 );
             })
         }
@@ -182,6 +154,10 @@ class RestPro extends Component {
         return (
             <div>
                 <NavBar />
+
+                <div className="bgimg" style={{ backgroundImage: `url(${this.state.path})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+                </div>
+
                 <select name="itemtype" required onChange={this.resttypeChangeHandler}>
                     <option selected value=''> -- select an option -- </option>
                     <option value="delivery">Delivery</option>

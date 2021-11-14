@@ -141,7 +141,7 @@ export class NavBar extends Component {
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <i className="fa fa-shopping-cart fa-2x" style={{ color: "grey", margin: "auto" }} onClick={this.showModal}></i></li>
-                <li><Link to="/order">Orders</Link></li>
+                <li><Link to="/mainorder">Orders</Link></li>
                 <li />
             </ul>
         );

@@ -13,7 +13,8 @@ export class Checkout extends Component {
             tax: 0,
             total_cost: 0,
             address: '',
-            carts: JSON.parse(localStorage.getItem('UBER_EATS_CART'))
+            carts: JSON.parse(localStorage.getItem('UBER_EATS_CART')),
+            inst: ''
         };
     }
 
@@ -104,6 +105,10 @@ export class Checkout extends Component {
         // }
     }
 
+    instChange =(e) =>{
+        this.setState({inst: e.target.value})
+    }
+
     qtyIncrement = (e) => {
         let itemClicked = JSON.parse(e.target.getAttribute('id'));
 
@@ -148,7 +153,8 @@ export class Checkout extends Component {
             order_type: 'delivery',
             address: "",
             total_cost: this.state.total_cost,
-            item: cart.menu_items
+            inst: this.state.inst,
+            item: cart.menu_items,
 
         }
         console.log("get cart", data.menu_items);
@@ -160,8 +166,10 @@ export class Checkout extends Component {
                     //  rest_list : a
 
                 });
-                alert('Order Placed');
+                alert('Order Placed...!. Your order id is',response.data._id);
                 localStorage.removeItem('UBER_EATS_CART');
+                (this.props.history.push("/custhome"))
+
             })
             .catch(err => {
                 console.log(err);
@@ -227,6 +235,10 @@ export class Checkout extends Component {
                     </table>
                     Delivery Address<br />
                     <textarea rows="5" cols="60" id="delivery_add" name="description" value={this.state.address}>
+
+                    </textarea><br />
+                    Special Instruction<br />
+                    <textarea rows="1" onChange={this.instChange} cols="60" id="delivery_add" name="inst" value={this.state.inst}>
 
                     </textarea><br />
                     <button type="button" onClick={this.placeOrder} class="btn btn-success">Place Order</button>

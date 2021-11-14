@@ -15,6 +15,8 @@ import Checkout from './Orders/Checkout'
 import UpdateMenu from './Resturant_Menu/UpdateMenu';
 import AddMenu from './Resturant_Menu/AddMenu';
 import Rest from './Profile/Rest';
+import Main_Orders from './Orders/Main_Orders';
+import RestOrders from './Orders/RestOrder';
 
 class Main extends Component {
     render() {
@@ -35,6 +37,8 @@ class Main extends Component {
                 <Route path="/updateMenu" component={UpdateMenu}/>
                 <Route path="/addMenu" component={AddMenu}/>
                 <Route path="/rest" component={Rest}/>
+                <Route path="/mainorder" component={Main_Orders}/>
+                <Route path="/restorder" component={RestOrders}/>
             </div>
         )
     }

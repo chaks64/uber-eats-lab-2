@@ -9,6 +9,7 @@ var ordersSchema = new Schema({
     tax: {type: Number},
     food_cost: {type: Number},
     rest_name: {type: String},
+    inst:{type: String},
     item: [
             {  // _id : {type: String},
                 name: {type: String},

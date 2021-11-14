@@ -16,15 +16,36 @@ class UpdateMenu extends Component {
             category: this.props.location.state.category,
             type: this.props.location.state.type,
             description: this.props.location.state.description,
+            path: this.props.location.state.path,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.updateMenu = this.updateMenu.bind(this);
+        this.fileSelector = this.fileSelector.bind(this);
     }
 
     handleInputChange = e => {
         this.setState({
             [e.target.name]: e.target.value
         });
+    }
+
+    fileSelector = (e) => {
+        let data = new FormData();
+        data.append('file', e.target.files[0], e.target.files[0].name)
+        axios.post(`${config.backendURL}/update`,
+            data, {
+            headers: { "Content-Type": "multipart/form-data", }
+            ,
+        })
+            .then(response => {
+                console.log(response.data.Location);
+                this.setState({
+                    path: response.data.Location
+                })
+            })
+            .catch(err => {
+                console.log('err')
+            });
     }
 
     updateMenu = (e) => {
@@ -39,7 +60,8 @@ class UpdateMenu extends Component {
             category: this.state.category,
             description: this.state.description,
             price: this.state.price,
-            type: this.state.type
+            type: this.state.type,
+            path: this.state.path,
         }
 
         console.log("data from update menu api",data);
@@ -90,7 +112,7 @@ class UpdateMenu extends Component {
                                 <input type="text" value={this.state.category} name="category" className="field-style field-split align-right" onChange={this.handleInputChange} placeholder="Category" />
                             </li>
                             <li>
-                                <input type="file" name="image" className="field-style field-full align-none" placeholder="Image" />
+                                <input type="file" name="image" className="field-style field-full align-none" placeholder="Image" multiple={false} onChange={this.fileSelector}/>
                             </li>
                             <li><label>Item Description</label>
                                 <textarea name="description" value={this.state.description} className="field-style" onChange={this.handleInputChange} placeholder="Description"></textarea>

@@ -30,6 +30,10 @@ var custsSchema = new Schema({
       type: String,
       default: "---"
     },
+    path: {
+      type: String,
+      default: "---"
+    },
     country: {type: String},
     rest: [
       {

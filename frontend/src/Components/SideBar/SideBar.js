@@ -54,7 +54,7 @@ export class SideBar extends Component {
     if (localStorage.getItem("token")) {
       sideLogin = <Menu iconShape="square">
         <MenuItem icon={<FiHome />}><Link to="/home">Home</Link></MenuItem>
-        <MenuItem icon={<FiTag />}><Link to="/order">Orders</Link></MenuItem>
+        <MenuItem icon={<FiTag />}><Link to="/mainorder">Orders</Link></MenuItem>
         <MenuItem icon={<FaRegHeart />}><Link to="/fav">Favourite</Link></MenuItem>
         <MenuItem icon={<RiPencilLine />}><Link to="/profile">Profile</Link></MenuItem>
       </Menu>

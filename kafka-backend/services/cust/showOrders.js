@@ -29,7 +29,7 @@ function handle_request(msg, callback) {
                 if (err) {
                     return handleError(err);
                 } else {
-                    callback(null, orders);
+                    callback(null, JSON.stringify(orders[0].order));
                 }
         });
     }
