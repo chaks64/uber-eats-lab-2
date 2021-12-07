@@ -3,6 +3,8 @@ import './order.css'
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import { config } from '../../config/config';
+import { placeOrder } from "../../mutations/mutations";
+import { graphql } from "react-apollo";
 
 export class Checkout extends Component {
     constructor(props) {
@@ -103,8 +105,8 @@ export class Checkout extends Component {
         // }
     }
 
-    instChange =(e) =>{
-        this.setState({inst: e.target.value})
+    instChange = (e) => {
+        this.setState({ inst: e.target.value })
     }
 
     qtyIncrement = (e) => {
@@ -142,37 +144,63 @@ export class Checkout extends Component {
         // }
     }
 
-    placeOrder = () => {
+    // placeOrder = () => {
+    //     let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
+    //     const data = {
+    //         username: localStorage.getItem('username'),
+    //         rest_id: cart.restaurant_id,
+    //         restname: localStorage.getItem('restname'),
+    //         order_status: 'new',
+    //         order_type: 'delivery',
+    //         address: "",
+    //         total_cost: this.state.total_cost,
+    //         inst: this.state.inst,
+    //         item: cart.menu_items,
+
+    //     }
+    //     console.log("get cart", data.menu_items);
+    //     axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
+    //     axios.post(`${config.backendURL}/cust/neworder`, data)
+    //         .then(response => {
+    //             console.log('!@!@!!@!@!@!@!@!',response.data._id);
+    //             this.setState({
+    //                 //  rest_list : a
+
+    //             });
+    //             alert('Order Placed...!. Your order id is',response.data._id);
+    //             localStorage.removeItem('UBER_EATS_CART');
+    //             (this.props.history.push("/custhome"))
+
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
+
+
+    placeOrder = async (e) => {
+        e.preventDefault();
         let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
-        const data = {
-            username: localStorage.getItem('username'),
-            rest_id: cart.restaurant_id,
-            restname: localStorage.getItem('restname'),
-            order_status: 'new',
-            order_type: 'delivery',
-            address: "",
-            total_cost: this.state.total_cost,
-            inst: this.state.inst,
-            item: cart.menu_items,
-
-        }
-        console.log("get cart", data.menu_items);
-        axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
-        axios.post(`${config.backendURL}/cust/neworder`, data)
-            .then(response => {
-                console.log('!@!@!!@!@!@!@!@!',response.data._id);
-                this.setState({
-                    //  rest_list : a
-
-                });
-                alert('Order Placed...!. Your order id is',response.data._id);
-                localStorage.removeItem('UBER_EATS_CART');
-                (this.props.history.push("/custhome"))
-
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        const result = await this.props.placeOrder({
+            variables: {
+                username: localStorage.getItem('username'),
+                rest_id: cart.restaurant_id,
+                restname: localStorage.getItem('restname'),
+                order_status: 'new',
+                order_type: 'delivery',
+                address: "",
+                total_cost: this.state.total_cost,
+                inst: this.state.inst,
+                item: (cart.menu_items),
+                // item: ["ABC","XYZ"],
+            },
+        });
+        console.log(result.data);
+        // this.setState({
+        //     success: true,
+        //     message: "Order Placed..."
+        // });
+        this.props.history.push("/custhome")
     }
 
     render() {
@@ -247,4 +275,4 @@ export class Checkout extends Component {
     }
 }
 
-export default Checkout
+export default graphql(placeOrder, { name: "placeOrder" })(Checkout); 

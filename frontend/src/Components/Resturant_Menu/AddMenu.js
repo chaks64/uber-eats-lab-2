@@ -3,6 +3,8 @@ import './menu.css';
 import axios from 'axios';
 import { config } from '../../config/config';
 import NavBar from '../NavBar/NavBar';
+import { addDishMutation } from "../../mutations/mutations";
+import { graphql } from "react-apollo";
 
 class AddMenu extends Component {
 
@@ -48,46 +50,70 @@ class AddMenu extends Component {
             });
     }
 
-    addMenu = (e) => {
+    // addMenu = (e) => {
+    //     e.preventDefault();
+    //     console.log("hello for add");
+
+
+    //     const data = {
+    //         rest_id: this.state.rest_id,
+    //         item_id: this.state.item_id,
+    //         item_name: this.state.name,
+    //         category: this.state.category,
+    //         description: this.state.description,
+    //         price: this.state.price,
+    //         type: this.state.type,
+    //         path: this.state.path
+    //     }
+
+    //     console.log("data from update menu api",data);
+
+    //     axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
+    //     axios.post(`${config.backendURL}/rest/addMenu`, data)
+    //         .then(response => {
+
+    //             // this.setState({
+    //             //     //menu_list : [],
+    //             //     menu_list: (response.data)
+    //             // });
+    //             (this.props.history.push("/resthome"))
+    //             console.log("menu list", response);
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //             this.setState({
+    //                 //  message: error.response
+    //             })
+    //         });
+    // }
+
+    addMenu = async (e) => {
         e.preventDefault();
-        console.log("hello for add");
-        
+        const result = await this.props.addDishMutation({
+            variables: {
+                rest_id: this.state.rest_id,
+                item_id: this.state.item_id,
+                name: this.state.name,
+                category: this.state.category,
+                description: this.state.description,
+                price: this.state.price,
+                type: this.state.type,
+                path: this.state.path
+            },
+        });
+        console.log(result.data);
 
-        const data = {
-            rest_id: this.state.rest_id,
-            item_id: this.state.item_id,
-            item_name: this.state.name,
-            category: this.state.category,
-            description: this.state.description,
-            price: this.state.price,
-            type: this.state.type,
-            path: this.state.path
-        }
+        this.setState({
+            success: true,
+            message: "Dish added..."
+        });
 
-        console.log("data from update menu api",data);
-
-        axios.defaults.headers.common['authorization'] = (localStorage.getItem('token'));
-        axios.post(`${config.backendURL}/rest/addMenu`, data)
-            .then(response => {
-
-                // this.setState({
-                //     //menu_list : [],
-                //     menu_list: (response.data)
-                // });
-                (this.props.history.push("/resthome"))
-                console.log("menu list", response);
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({
-                    //  message: error.response
-                })
-            });
+        this.props.history.push("/resthome")
     }
 
     render() {
 
-                return (
+        return (
             <div>
                 <NavBar />
                 {/* {modal} */}
@@ -112,13 +138,13 @@ class AddMenu extends Component {
                                 <input type="text" value={this.state.category} name="category" className="field-style field-split align-right" onChange={this.handleInputChange} placeholder="Category" />
                             </li>
                             <li>
-                            <input type="file" name="image" className="field-style field-full align-none" placeholder="Image" multiple={false} onChange={this.fileSelector}/>
+                                <input type="file" name="image" className="field-style field-full align-none" placeholder="Image" multiple={false} onChange={this.fileSelector} />
                             </li>
                             <li><label>Item Description</label>
                                 <textarea name="description" value={this.state.description} className="field-style" onChange={this.handleInputChange} placeholder="Description"></textarea>
                             </li>
                             <li>
-                            <button  className="btn btn-lg btn-success" type="submit">Save</button>
+                                <button className="btn btn-lg btn-success" type="submit">Save</button>
                             </li>
                         </ul>
                     </form>
@@ -129,4 +155,4 @@ class AddMenu extends Component {
     }
 }
 
-export default AddMenu
+export default graphql(addDishMutation, { name: "addDishMutation" })(AddMenu);

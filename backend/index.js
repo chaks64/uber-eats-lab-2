@@ -10,25 +10,32 @@ const AWS = require("aws-sdk");
 var multiparty = require('multiparty');
 const fs = require('fs');
 const fileType = require('file-type');
+// const graphHttp = require('express-graphql');
+const {graphqlHTTP} = require('express-graphql');
+const { buildSchema } = require('graphql');
+const schema = require('./schema/schema');
+
+
+
 
 
 AWS.config.update({
-    accessKeyId: awsconfig.AWSAccessKeyId,
-    secretAccessKey: awsconfig.AWSSecretKey,
-    region: awsconfig.region
+  accessKeyId: awsconfig.AWSAccessKeyId,
+  secretAccessKey: awsconfig.AWSSecretKey,
+  region: awsconfig.region
 });
 
 const s3 = new AWS.S3();
 
 const uploadFile = (buffer, name, type) => {
-    const params = {
-        ACL: "public-read",
-        Body: buffer,
-        Bucket: awsconfig.bucket,
-        ContentType: type.mime,
-        Key: `${name}.${type.ext}`,
-    };
-    return s3.upload(params).promise();
+  const params = {
+    ACL: "public-read",
+    Body: buffer,
+    Bucket: awsconfig.bucket,
+    ContentType: type.mime,
+    Key: `${name}.${type.ext}`,
+  };
+  return s3.upload(params).promise();
 };
 
 // module.exports = {
@@ -53,49 +60,85 @@ app.use(cors({ origin: frontendURL, credentials: true }));
 
 //use express session to maintain session data
 app.use(session({
-    secret: 'cmpe273_kafka_passport_mongo',
-    resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
-    saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
-    duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
-    activeDuration: 5 * 60 * 1000
+  secret: 'cmpe273_kafka_passport_mongo',
+  resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
+  saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+  duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
+  activeDuration: 5 * 60 * 1000
 }));
 
 app.use(bodyParser.json());
 
+// app.use(
+//   '/graphql',
+
+//   graphqlHTTP({
+//     schema: buildSchema(`
+//         type RootQuery {
+//           events : [String!]!
+//         }
+
+//         type RootMutaion {
+//           createEvent(name: String): String
+//         }
+
+//         schema {
+//           query: RootQuery
+//           mutation: RootMutaion
+//         }
+//     `),
+//     rootValue: {
+//       events: () => {
+//         return ['TEST1', 'TEST2', 'TEST3'];
+//       },
+//       createEvent: (args) => {
+//         const eventName = args.name;
+//         return eventName;
+//       }
+//     },
+//     graphiql: true
+
+//   }));
+
+app.use("/graphql",graphqlHTTP({
+  schema,
+  graphiql: true
+}));
+
 //Allow Access Control
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', frontendURL);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-    res.setHeader('Cache-Control', 'no-cache');
-    next();
+  res.setHeader('Access-Control-Allow-Origin', frontendURL);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+  res.setHeader('Cache-Control', 'no-cache');
+  next();
 });
 
 const mongoose = require('mongoose');
 
 var options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    poolSize: 500,
-    bufferMaxEntries: 0
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  poolSize: 500,
+  bufferMaxEntries: 0
 };
 
 mongoose.connect(mongoDB, options, (err, res) => {
-    if (err) {
-        console.log(err);
-        console.log(`MongoDB Connection Failed`);
-    } else {
-        console.log(`MongoDB Connected`);
-    }
+  if (err) {
+    console.log(err);
+    console.log(`MongoDB Connection Failed`);
+  } else {
+    console.log(`MongoDB Connected`);
+  }
 });
 
 console.log("here for req");
 
 app.post('/update', async (req, res) => {
-    console.log("here for image ", req.data);
-    // res.send('hello from simple server :)')
-    const form = new multiparty.Form();
+  console.log("here for image ", req.data);
+  // res.send('hello from simple server :)')
+  const form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
     if (error) {
       return res.status(500).send(error);

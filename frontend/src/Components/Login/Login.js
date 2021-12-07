@@ -7,6 +7,8 @@ import axios from 'axios';
 import { config } from '../../config/config';
 import { Redirect } from 'react-router';
 import jwt_decode from "jwt-decode";
+import { withApollo } from "react-apollo";
+import { loginQuery } from "../../queries/login";
 //import { loginAction } from '../../redux/login/loginActions';
 //import { loginAction } from "../redux/login/loginActions";
 
@@ -23,7 +25,7 @@ export class Login extends Component {
             authFlag: false,
             usertoken: "",
             usertype: "",
-
+            redirect: false,
             message: ''
         };
 
@@ -38,53 +40,97 @@ export class Login extends Component {
     }
 
 
-    onSubmit = (e) => {
-        console.log("here for login");
+    // onSubmit = async (e) => {
+    //     console.log("here for login");
+    //     e.preventDefault();
+
+    //     //this.props.login(this.state.username, this.state.password);
+
+    //     let data = {
+    //         username: this.state.username,
+    //         password: this.state.password,
+    //     };
+
+    //     axios.defaults.withCredentials = true;
+    //     const token = await axios.post(`${config.backendURL}/user/login`, data)
+    //         .then(response => {
+    //             this.setState({
+    //                 authFlag: true,
+    //                 usertoken: response.data.token,
+    //             });
+    //             console.log(response.data.status_code);
+
+    //             if (response.data.status_code === "200") {
+    //                 // if(response.status_code)
+    //                 var decoded = jwt_decode(this.state.usertoken.split(" ")[1]);
+    //                 var user = {
+    //                     u_id: decoded.id,
+    //                     username: decoded.username,
+    //                     usertype: decoded.usertype,
+    //                 };
+    //             } else {
+    //                 this.setState({ message: response.data.msg})
+    //             }
+    //             console.log(user);
+    //         })
+    //         .catch(error => {
+    //             // this.setState({
+    //             //     //   message: error.response.data
+    //             // })
+    //         });
+    // };
+
+    onSubmit = async (e) => {
         e.preventDefault();
+        const { data } = await this.props.client.query({
+            query: loginQuery,
+            variables: {
+                username: this.state.username,
+                password: this.state.password,
+            },
+        });
 
-        //this.props.login(this.state.username, this.state.password);
+        console.log(data);
+        console.log(data.login.token);
+        this.setState({
+            authFlag: true,
+            usertoken: data.login.token,
+        });
 
-        let data = {
-            username: this.state.username,
-            password: this.state.password,
+        localStorage.setItem("token", data.login.token);
+
+        var decoded = jwt_decode(data.login.token.split(" ")[1]);
+        var user = {
+            u_id: decoded.id,
+            username: decoded.username,
+            usertype: decoded.usertype,
         };
-
-        axios.defaults.withCredentials = true;
-        axios.post(`${config.backendURL}/user/login`, data)
-            .then(response => {
-                this.setState({
-                    authFlag: true,
-                    usertoken: response.data,
-                });
-                console.log(response.data);
-                var decoded = jwt_decode(this.state.usertoken.split(" ")[1]);
-                var user = {
-                    u_id: decoded.id,
-                    username: decoded.username,
-                    usertype: decoded.usertype,
-                };
-                console.log(user);
-            })
-            .catch(error => {
-                this.setState({
-                    //   message: error.response.data
-                })
-            });
-    };
+        localStorage.setItem("user", JSON.stringify(user));
+        var decoded = jwt_decode((localStorage.getItem("token")));
+        localStorage.setItem("user_id", decoded._id);
+        localStorage.setItem("username", decoded.username);
+        localStorage.setItem("usertype", decoded.usertype);
+        
+        this.setState({
+            redirect: true
+        })
+    }
 
 
     render() {
 
         let redirectVar = null;
-        if (this.state.usertoken.length > 0) {
+        if ((localStorage.getItem("user"))) {
             console.log("here for login url check");
-            localStorage.setItem("token", this.state.usertoken);
-            var decoded = jwt_decode(this.state.usertoken.split(' ')[1]);
+            var decoded = jwt_decode((localStorage.getItem("token")));
             localStorage.setItem("user_id", decoded._id);
             localStorage.setItem("username", decoded.username);
             localStorage.setItem("usertype", decoded.usertype);
-
-            redirectVar = <Redirect to="/home" />
+           
+            if(this.state.redirect === true){
+                redirectVar = <Redirect to="/home" />
+            }
+            
         }
 
         // if (JSON.parse(localStorage.getItem("username"))) {
@@ -111,8 +157,20 @@ export class Login extends Component {
         //     }, 3000);
         //   }
 
+
+        if ((localStorage.getItem("username"))) {
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/home",
+                    }}
+                ></Redirect>
+            );
+        }
+
         return (
             <div>
+                {console.log(this.props)}
                 {redirectVar}
                 <div className="container width">
 
@@ -179,4 +237,4 @@ export class Login extends Component {
 // };
 
 // export default connect(mapStateToProps, actionCreators)(Login);
-export default Login;
+export default withApollo(Login);

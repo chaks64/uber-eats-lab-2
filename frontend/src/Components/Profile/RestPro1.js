@@ -43,7 +43,7 @@ class RestPro extends Component {
 
     addToCartHandler = (e) => {
         let itemClicked = JSON.parse(e.target.getAttribute('id'));
-        console.log(itemClicked);
+        console.log("!@!@!@!@!@!@!@!@!!@!@!",JSON.parse(e.target.getAttribute('id')));
         if (localStorage.getItem('UBER_EATS_CART')) {
             let cart = JSON.parse(localStorage.getItem('UBER_EATS_CART'));
             if (cart.restaurant_id === this.state.rest_id) {

@@ -59,7 +59,7 @@ export class RestOrder extends Component {
         console.log(e.target.getAttribute("id"));
         let data = {
              order_id : abc,
-             order_status : "done"
+             order_status : "received"
         }
         
         console.log("going for order update",data);

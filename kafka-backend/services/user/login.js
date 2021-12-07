@@ -20,6 +20,7 @@ function handle_request(msg, callback) {
           if (!bcrypt.compareSync(msg.password, result.password)) {
             console.log('Invalid Credentials!');
             let send = {
+              token : "",
               status_code: 401,
               msg: "Invalid Crednetials!"
             }
@@ -35,11 +36,22 @@ function handle_request(msg, callback) {
             const token = jwt.sign(payload, secret, {
               expiresIn: 1008000
             });
-            callback(null, "JWT " + token);
+            const send = {
+              token : "JWT " + token,
+              status_code: 200,
+              msg: ""
+            }
+            callback(null, send);
           }
         } else {
           console.log("User doesn't exist");
-          callback(null, "User doesn't exist");
+          let send = {
+            token : "",
+            status_code: 401,
+            msg: "User doesn't exist"
+          }
+          callback(null, send);
+          callback(null, send);
 
           //   res.status(400).json({ msg: "User doesn't exist" });
         }

@@ -5,13 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux'; 
 import store from "./redux/Store/index";
-
+import { ApolloProvider } from "react-apollo";
+import ApolloClient from "apollo-boost";
+const client = new ApolloClient({ uri: `http://localhost:3001/graphql` });
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <ApolloProvider client={client}>
     <Provider store = {store}>
       <App />
     </Provider>
-  </React.StrictMode>,
+    </ApolloProvider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
